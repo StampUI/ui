@@ -29,8 +29,6 @@ StampUI is an open-source collection of UI components and blocks for React and N
 pnpm dlx stampui init
 ```
 
-This detects your project setup (Next.js, React, Vite) and writes a `stampui.config.json`.
-
 ### 2. Add a component
 
 ```bash
@@ -39,16 +37,12 @@ pnpm dlx stampui add data-table
 pnpm dlx stampui add token-stream
 ```
 
-The source file is copied directly into your project. Edit it freely.
-
-### 3. Browse components
+### 3. Browse
 
 ```bash
 pnpm dlx stampui list
 pnpm dlx stampui search <query>
 ```
-
-Or visit [stampui.com](https://stampui.com) for live previews and docs.
 
 ---
 
@@ -63,54 +57,52 @@ Or visit [stampui.com](https://stampui.com) for live previews and docs.
 
 ## Components
 
-All 94 components below are free and open source.
+All 94 components below are free and open source. Click any component to see live preview and docs.
 
 ### Primitives
-`button` `button-group` `badge` `label` `separator` `kbd`
+[Button](https://stampui.com/blocks/components/button) · [Button Group](https://stampui.com/blocks/components/button-group) · [Badge](https://stampui.com/blocks/components/badge) · [Label](https://stampui.com/blocks/components/label) · [Separator](https://stampui.com/blocks/components/separator) · [Kbd](https://stampui.com/blocks/components/kbd)
 
 ### Inputs and Forms
-`input` `textarea` `password-input` `checkbox` `radio-group` `switch` `slider` `select` `native-select` `combobox` `multi-select` `date-picker` `field` `input-group` `number-stepper` `tag-input` `toggle` `toggle-group` `inline-edit`
+[Input](https://stampui.com/blocks/components/input) · [Textarea](https://stampui.com/blocks/components/textarea) · [Password Input](https://stampui.com/blocks/components/password-input) · [Checkbox](https://stampui.com/blocks/components/checkbox) · [Radio Group](https://stampui.com/blocks/components/radio-group) · [Switch](https://stampui.com/blocks/components/switch) · [Slider](https://stampui.com/blocks/components/slider) · [Select](https://stampui.com/blocks/components/select) · [Native Select](https://stampui.com/blocks/components/native-select) · [Combobox](https://stampui.com/blocks/components/combobox) · [Multi Select](https://stampui.com/blocks/components/multi-select) · [Date Picker](https://stampui.com/blocks/components/date-picker) · [Field](https://stampui.com/blocks/components/field) · [Input Group](https://stampui.com/blocks/components/input-group) · [Number Stepper](https://stampui.com/blocks/components/number-stepper) · [Tag Input](https://stampui.com/blocks/components/tag-input) · [Toggle](https://stampui.com/blocks/components/toggle) · [Toggle Group](https://stampui.com/blocks/components/toggle-group) · [Inline Edit](https://stampui.com/blocks/components/inline-edit)
 
 ### Layout
-`card` `aspect-ratio` `scroll-area` `resizable` `collapsible` `accordion` `tabs` `sidebar`
+[Card](https://stampui.com/blocks/components/card) · [Aspect Ratio](https://stampui.com/blocks/components/aspect-ratio) · [Scroll Area](https://stampui.com/blocks/components/scroll-area) · [Resizable](https://stampui.com/blocks/components/resizable) · [Collapsible](https://stampui.com/blocks/components/collapsible) · [Accordion](https://stampui.com/blocks/components/accordion) · [Tabs](https://stampui.com/blocks/components/tabs) · [Sidebar](https://stampui.com/blocks/components/sidebar)
 
 ### Overlay
-`dialog` `drawer` `sheet` `popover` `tooltip` `hover-card` `context-menu` `dropdown-menu` `alert-dialog` `sonner` `command` `command-box`
+[Dialog](https://stampui.com/blocks/components/dialog) · [Drawer](https://stampui.com/blocks/components/drawer) · [Sheet](https://stampui.com/blocks/components/sheet) · [Popover](https://stampui.com/blocks/components/popover) · [Tooltip](https://stampui.com/blocks/components/tooltip) · [Hover Card](https://stampui.com/blocks/components/hover-card) · [Context Menu](https://stampui.com/blocks/components/context-menu) · [Dropdown Menu](https://stampui.com/blocks/components/dropdown-menu) · [Alert Dialog](https://stampui.com/blocks/components/alert-dialog) · [Sonner](https://stampui.com/blocks/components/sonner) · [Command](https://stampui.com/blocks/components/command) · [Command Box](https://stampui.com/blocks/components/command-box)
 
 ### Navigation
-`breadcrumb` `menubar` `navigation-menu` `pagination`
+[Breadcrumb](https://stampui.com/blocks/components/breadcrumb) · [Menubar](https://stampui.com/blocks/components/menubar) · [Navigation Menu](https://stampui.com/blocks/components/navigation-menu) · [Pagination](https://stampui.com/blocks/components/pagination)
 
 ### Feedback
-`alert` `skeleton` `spinner` `progress` `progress-ring` `status-pulse` `loading-card` `loading-dots` `empty` `empty-state`
+[Alert](https://stampui.com/blocks/components/alert) · [Skeleton](https://stampui.com/blocks/components/skeleton) · [Spinner](https://stampui.com/blocks/components/spinner) · [Progress](https://stampui.com/blocks/components/progress) · [Progress Ring](https://stampui.com/blocks/components/progress-ring) · [Status Pulse](https://stampui.com/blocks/components/status-pulse) · [Empty](https://stampui.com/blocks/components/empty) · [Empty State](https://stampui.com/blocks/components/empty-state)
 
 ### Data Display
-`table` `avatar` `avatar-stack` `animated-number` `animated-counter`
+[Table](https://stampui.com/blocks/components/table) · [Avatar](https://stampui.com/blocks/components/avatar) · [Avatar Stack](https://stampui.com/blocks/components/avatar-stack) · [Animated Number](https://stampui.com/blocks/components/animated-number) · [Animated Counter](https://stampui.com/blocks/components/animated-counter)
 
 ### Marketing
-`hero-section` `pricing-section` `feature-grid` `stats-strip` `social-proof-bar` `testimonials-wall` `cta-banner` `announcement-bar` `waitlist-section` `faq-accordion` `feature-comparison` `site-footer` `team-grid` `metrics-grid`
+[Hero Section](https://stampui.com/blocks/components/hero-section) · [Pricing Section](https://stampui.com/blocks/components/pricing-section) · [Feature Grid](https://stampui.com/blocks/components/feature-grid) · [Stats Strip](https://stampui.com/blocks/components/stats-strip) · [Social Proof Bar](https://stampui.com/blocks/components/social-proof-bar) · [Testimonials Wall](https://stampui.com/blocks/components/testimonials-wall) · [CTA Banner](https://stampui.com/blocks/components/cta-banner) · [Announcement Bar](https://stampui.com/blocks/components/announcement-bar) · [Waitlist Section](https://stampui.com/blocks/components/waitlist-section) · [FAQ Accordion](https://stampui.com/blocks/components/faq-accordion) · [Feature Comparison](https://stampui.com/blocks/components/feature-comparison) · [Site Footer](https://stampui.com/blocks/components/site-footer) · [Team Grid](https://stampui.com/blocks/components/team-grid) · [Metrics Grid](https://stampui.com/blocks/components/metrics-grid)
 
 ### AI and Streaming
-`token-stream` `prompt-input` `typing-indicator` `typewriter-text`
+[Token Stream](https://stampui.com/blocks/components/token-stream) · [Prompt Input](https://stampui.com/blocks/components/prompt-input) · [Typing Indicator](https://stampui.com/blocks/components/typing-indicator) · [Typewriter Text](https://stampui.com/blocks/components/typewriter-text)
 
 ### Utilities
-`copy-button` `confirm-action` `cookie-consent` `changelog-feed` `gradient-text` `marquee` `error-page` `registry-explorer`
+[Copy Button](https://stampui.com/blocks/components/copy-button) · [Confirm Action](https://stampui.com/blocks/components/confirm-action) · [Cookie Consent](https://stampui.com/blocks/components/cookie-consent) · [Changelog Feed](https://stampui.com/blocks/components/changelog-feed) · [Gradient Text](https://stampui.com/blocks/components/gradient-text) · [Marquee](https://stampui.com/blocks/components/marquee) · [Error Page](https://stampui.com/blocks/components/error-page) · [Usage Card](https://stampui.com/blocks/components/usage-card) · [Loading Card](https://stampui.com/blocks/components/loading-card) · [Loading Dots](https://stampui.com/blocks/components/loading-dots) · [Signal Arc](https://stampui.com/blocks/components/signal-arc) · [Orbit Trail](https://stampui.com/blocks/components/orbit-trail) · [Grid Wave](https://stampui.com/blocks/components/grid-wave)
 
 ---
 
 ## Manual Installation
 
-If you prefer not to use the CLI, each component can be copied manually from [stampui.com](https://stampui.com). Every docs page includes the full source.
+Every component can be copied manually from [stampui.com](https://stampui.com). Each docs page includes the full source.
 
 ---
 
 ## Project Structure
 
 ```
-packages/
-  blocks/      Source files for all components and blocks
-  cli/         stampui CLI (published as "stampui" on npm)
-apps/
-  web/         Documentation site at stampui.com
+components/
+  core/      UI primitives
+  blocks/    Composed blocks and marketing sections
 ```
 
 ---
