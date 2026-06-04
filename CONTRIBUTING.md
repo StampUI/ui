@@ -15,7 +15,7 @@ Thank you for your interest in contributing. This document covers how to report 
 
 ## Before You Start
 
-Read the [design rules](./apps/web/app/globals.css) and check [stampui.com](https://stampui.com) to understand the visual system. StampUI is dark-first, token-based, and intentionally minimal. Contributions that deviate from the design system will not be accepted.
+Browse [stampui.com](https://stampui.com) to understand the component library and visual system. StampUI is dark-first, token-based, and intentionally minimal. Contributions that deviate from the design system will not be accepted.
 
 Key rules:
 - No hardcoded hex values in `className` — use design tokens only (`bg-surface-2`, `text-muted-foreground`, etc.)
@@ -49,18 +49,8 @@ A good proposal answers:
 ## Submitting a Pull Request
 
 1. Fork the repository and create a branch from `main`
-2. Follow the [BLOCK-CHECKLIST.md](./BLOCK-CHECKLIST.md) before submitting
-3. Keep changes focused — one component or fix per PR
-4. Write a clear description: what changed and why
-
-### Local setup
-
-```bash
-pnpm install
-pnpm --filter web dev
-```
-
-The docs site runs at `http://localhost:3000`. Every component has a preview route at `/preview/...` and a docs page at `/blocks/components/...`.
+2. Keep changes focused — one component or fix per PR
+3. Write a clear description: what changed and why
 
 ---
 
