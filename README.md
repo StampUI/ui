@@ -34,7 +34,6 @@ pnpm dlx stampui init
 ```bash
 pnpm dlx stampui add button
 pnpm dlx stampui add data-table
-pnpm dlx stampui add token-stream
 ```
 
 ### 3. Browse
@@ -84,7 +83,7 @@ All 94 components below are free and open source. Click any component to see liv
 [Hero Section](https://stampui.com/blocks/components/hero-section) · [Pricing Section](https://stampui.com/blocks/components/pricing-section) · [Feature Grid](https://stampui.com/blocks/components/feature-grid) · [Stats Strip](https://stampui.com/blocks/components/stats-strip) · [Social Proof Bar](https://stampui.com/blocks/components/social-proof-bar) · [Testimonials Wall](https://stampui.com/blocks/components/testimonials-wall) · [CTA Banner](https://stampui.com/blocks/components/cta-banner) · [Announcement Bar](https://stampui.com/blocks/components/announcement-bar) · [Waitlist Section](https://stampui.com/blocks/components/waitlist-section) · [FAQ Accordion](https://stampui.com/blocks/components/faq-accordion) · [Feature Comparison](https://stampui.com/blocks/components/feature-comparison) · [Site Footer](https://stampui.com/blocks/components/site-footer) · [Team Grid](https://stampui.com/blocks/components/team-grid) · [Metrics Grid](https://stampui.com/blocks/components/metrics-grid)
 
 ### AI and Streaming
-[Token Stream](https://stampui.com/blocks/components/token-stream) · [Prompt Input](https://stampui.com/blocks/components/prompt-input) · [Typing Indicator](https://stampui.com/blocks/components/typing-indicator) · [Typewriter Text](https://stampui.com/blocks/components/typewriter-text)
+[Typing Indicator](https://stampui.com/blocks/components/typing-indicator) · [Typewriter Text](https://stampui.com/blocks/components/typewriter-text)
 
 ### Utilities
 [Copy Button](https://stampui.com/blocks/components/copy-button) · [Confirm Action](https://stampui.com/blocks/components/confirm-action) · [Cookie Consent](https://stampui.com/blocks/components/cookie-consent) · [Changelog Feed](https://stampui.com/blocks/components/changelog-feed) · [Gradient Text](https://stampui.com/blocks/components/gradient-text) · [Marquee](https://stampui.com/blocks/components/marquee) · [Error Page](https://stampui.com/blocks/components/error-page) · [Usage Card](https://stampui.com/blocks/components/usage-card) · [Loading Card](https://stampui.com/blocks/components/loading-card) · [Loading Dots](https://stampui.com/blocks/components/loading-dots) · [Signal Arc](https://stampui.com/blocks/components/signal-arc) · [Orbit Trail](https://stampui.com/blocks/components/orbit-trail) · [Grid Wave](https://stampui.com/blocks/components/grid-wave)

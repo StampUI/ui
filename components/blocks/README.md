@@ -24,7 +24,6 @@ Click any block to open the live preview and docs on stampui.com.
 | [Orbit Trail](https://stampui.com/blocks/components/orbit-trail) | Three dots orbiting a center point at different radii and speeds. |
 | [Pricing Section](https://stampui.com/blocks/components/pricing-section) | A modern, data-driven pricing section for SaaS products. |
 | [Progress Ring](https://stampui.com/blocks/components/progress-ring) | SVG circular progress ring with animated fill and percentage label. |
-| [Prompt Input](https://stampui.com/blocks/components/prompt-input) | A robust, auto-resizing text area with submit mechanics. |
 | [Registry Explorer](https://stampui.com/blocks/components/registry-explorer) | A searchable, filterable block registry browser with sidebar navigation. |
 | [Signal Arc](https://stampui.com/blocks/components/signal-arc) | Concentric rings that expand and fade like sonar pulses. |
 | [Site Footer](https://stampui.com/blocks/components/site-footer) | Multi-column site footer with brand logo, navigation links, social icons, and copyright line. |
@@ -32,7 +31,6 @@ Click any block to open the live preview and docs on stampui.com.
 | [Stats Strip](https://stampui.com/blocks/components/stats-strip) | Animated count-up metrics row. Strip layout (bordered, full-width) or grid layout. Numbers animate on viewport entry. |
 | [Team Grid](https://stampui.com/blocks/components/team-grid) | Responsive team member card grid with avatar, name, role, bio, and social links. |
 | [Testimonials Wall](https://stampui.com/blocks/components/testimonials-wall) | Masonry-style testimonial quote wall with avatar, name, role, and star rating. |
-| [Token Stream](https://stampui.com/blocks/components/token-stream) | Animated token streaming text effect for LLM outputs. |
 | [Typewriter Text](https://stampui.com/blocks/components/typewriter-text) | Text that types, pauses, and deletes itself in a looping typewriter effect. |
 | [Usage Card](https://stampui.com/blocks/components/usage-card) | Display API usage and subscription limits. |
 | [Waitlist Section](https://stampui.com/blocks/components/waitlist-section) | Email capture section for product launches with social proof count and submit feedback. |
