@@ -16,7 +16,7 @@ export interface HeroSectionProps {
 export function HeroSection({
   eyebrow = "Now in public beta",
   headline = "Your app works.\nNow make it look shipped.",
-  subtext = "Production-ready UI blocks stamped directly into your project. No runtime, no lock-in — just clean code you own.",
+  subtext = "Production-ready UI blocks stamped directly into your project. No runtime, no lock-in, just clean code you own.",
   primaryCta = { label: "Browse Blocks", href: "/blocks" },
   secondaryCta = { label: "View Components", href: "/blocks/components" },
   align = "center",

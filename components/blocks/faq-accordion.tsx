@@ -18,7 +18,7 @@ export interface FaqAccordionProps {
 const DEFAULT_ITEMS: FaqItem[] = [
   {
     question: "Do I need to install a runtime?",
-    answer: "No. StampUI copies source files directly into your project. There is no runtime dependency — you own every line of code after stamping.",
+    answer: "No. StampUI copies source files directly into your project. There is no runtime dependency, you own every line of code after stamping.",
   },
   {
     question: "What frameworks are supported?",
