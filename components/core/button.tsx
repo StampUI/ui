@@ -46,31 +46,31 @@ const buttonVariants = cva(
         "icon-sm": "h-8 w-8 rounded-md",
       },
       variant: {
-        /** Primary — white bg, dark text. The strongest CTA. */
+        /** Primary: white bg, dark text. The strongest CTA. */
         primary:
           "bg-foreground text-background hover:bg-foreground/90",
 
-        /** Outline — bordered, transparent. Secondary actions. */
+        /** Outline: bordered, transparent. Secondary actions. */
         outline:
           "border border-border bg-transparent text-foreground hover:bg-surface-2 hover:border-border-strong",
 
-        /** Ghost — no border, no bg. Nav actions, icon rows. */
+        /** Ghost: no border, no bg. Nav actions, icon rows. */
         ghost:
           "bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground",
 
-        /** Danger — destructive action. Subtle tinted surface. */
+        /** Danger: destructive action. Subtle tinted surface. */
         danger:
           "bg-transparent border border-border text-foreground hover:bg-red-950/40 hover:border-red-900/50",
 
-        /** Rounded — pill-shaped outline. Decorative / marketing CTAs. */
+        /** Rounded: pill-shaped outline. Decorative / marketing CTAs. */
         rounded:
           "border border-border bg-transparent text-foreground hover:bg-surface-2 hover:border-border-strong rounded-full",
 
-        /** Dashed — dashed border. Draft states, placeholder actions. */
+        /** Dashed: dashed border. Draft states, placeholder actions. */
         dashed:
           "border border-dashed border-border bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-border-strong",
 
-        /** Dashed Rounded — pill shape with dashed border. */
+        /** Dashed Rounded: pill shape with dashed border. */
         "dashed-rounded":
           "border border-dashed border-border bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-border-strong rounded-full",
       },
@@ -86,7 +86,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
-   * When true, the button renders as a `Slot` — allowing you to pass any
+   * When true, the button renders as a `Slot`, allowing you to pass any
    * child element (e.g. `<a>` or Next.js `<Link>`) while keeping all
    * button styles applied.
    */

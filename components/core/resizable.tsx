@@ -89,7 +89,7 @@ ResizablePanelGroup.displayName = "ResizablePanelGroup"
 
 export interface ResizablePanelProps extends React.HTMLAttributes<HTMLDivElement> {
   minSize?: number
-  /** Injected automatically by ResizablePanelGroup — do not pass manually. */
+  /** Injected automatically by ResizablePanelGroup, do not pass manually. */
   _index?: number
 }
 
@@ -125,7 +125,7 @@ ResizablePanel.displayName = "ResizablePanel"
 
 export interface ResizableHandleProps extends React.HTMLAttributes<HTMLDivElement> {
   withHandle?: boolean
-  /** Injected automatically by ResizablePanelGroup — do not pass manually. */
+  /** Injected automatically by ResizablePanelGroup, do not pass manually. */
   _index?: number
 }
 
