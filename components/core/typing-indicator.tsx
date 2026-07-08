@@ -47,15 +47,15 @@ export function TypingIndicator({
     >
       <span className="flex items-center gap-1 h-3">
         <span 
-          className={cx("bg-foreground/70 rounded-full animate-bounce shrink-0", dotSize)} 
+          className={cx("bg-foreground/70 rounded-full animate-bounce motion-reduce:animate-none shrink-0", dotSize)}
           style={{ animationDelay: "0ms" }} 
         />
         <span 
-          className={cx("bg-foreground/70 rounded-full animate-bounce shrink-0", dotSize)} 
+          className={cx("bg-foreground/70 rounded-full animate-bounce motion-reduce:animate-none shrink-0", dotSize)}
           style={{ animationDelay: "150ms" }} 
         />
         <span 
-          className={cx("bg-foreground/70 rounded-full animate-bounce shrink-0", dotSize)} 
+          className={cx("bg-foreground/70 rounded-full animate-bounce motion-reduce:animate-none shrink-0", dotSize)}
           style={{ animationDelay: "300ms" }} 
         />
       </span>

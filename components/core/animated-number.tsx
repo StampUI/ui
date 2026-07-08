@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion"
 
 type Format = "default" | "compact" | "currency" | "percent"
 
@@ -45,6 +46,7 @@ export function AnimatedNumber({
   const [current, setCurrent] = React.useState(0)
   const ref = React.useRef<HTMLSpanElement>(null)
   const triggered = React.useRef(false)
+  const reducedMotion = usePrefersReducedMotion()
 
   React.useEffect(() => {
     const el = ref.current
@@ -53,6 +55,10 @@ export function AnimatedNumber({
       ([entry]) => {
         if (entry.isIntersecting && !triggered.current) {
           triggered.current = true
+          if (reducedMotion) {
+            setCurrent(value)
+            return
+          }
           const startTime = performance.now()
           const tick = (now: number) => {
             const t = Math.min((now - startTime) / duration, 1)
@@ -67,7 +73,7 @@ export function AnimatedNumber({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [value, duration])
+  }, [value, duration, reducedMotion])
 
   return (
     <span ref={ref} className={cx("tabular-nums", className)}>

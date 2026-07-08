@@ -35,8 +35,13 @@ export function Marquee({
           from { transform: translateX(calc(-50% - var(--gap) / 2)); }
           to { transform: translateX(0); }
         }
+        @media (prefers-reduced-motion: reduce) {
+          [data-marquee-track] { animation: none !important; }
+          [data-marquee-clone] { display: none; }
+        }
       `}</style>
       <div
+        data-marquee-track
         className={cx(
           "flex min-w-full shrink-0 items-center",
           pauseOnHover && "hover:[animation-play-state:paused]"
@@ -52,7 +57,7 @@ export function Marquee({
         <div className="flex shrink-0 items-center" style={{ gap: `${gap}px` }}>
           {children}
         </div>
-        <div className="flex shrink-0 items-center" style={{ gap: `${gap}px` }} aria-hidden>
+        <div data-marquee-clone className="flex shrink-0 items-center" style={{ gap: `${gap}px` }} aria-hidden>
           {children}
         </div>
       </div>
