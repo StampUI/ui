@@ -1,79 +1,99 @@
 # Contributing to StampUI
 
-Thank you for your interest in contributing. This document covers how to report bugs, propose new components, and submit pull requests.
+Thank you for your interest in contributing. This document covers how the repos relate, how to set up locally, and what we expect in issues and pull requests.
 
----
+## How the repos relate (read this first)
 
-## Ways to Contribute
+StampUI includes a public MIT open-source core and a commercial catalog:
 
-- **Bug reports** — something renders incorrectly or breaks at a certain screen size
-- **Fixes** — typos, prop type corrections, accessibility improvements
-- **New components** — primitives or utility blocks that fit the design system
-- **Documentation** — clearer descriptions, better examples, missing edge cases
+- **This repo (`StampUI/ui`)**: the free MIT components and blocks, exactly as the CLI installs them.
+- **[`StampUI/cli`](https://github.com/StampUI/cli)**: the CLI, MIT, developed in the open.
+- **Commercial catalog**: pro blocks and templates sold at [stampui.com](https://stampui.com). They live outside the public repos and fund the maintenance of the free core.
 
----
+Contributions to the public repos should only target the MIT open-source surface. Do not submit PRs that include paid/pro source code, private registry data, license-gated files, or commercial catalog content. If your PR reimplements something that exists in the pro catalog, that's fine as long as it is your own work; what we can't accept is copied pro source.
 
-## Before You Start
+The maintainer also develops against an internal monorepo that contains the commercial side. Changes merged here are upstreamed there by the maintainer before any sync back, so **merged community PRs are not overwritten** and your authorship stays in the git history and [CONTRIBUTORS.md](./CONTRIBUTORS.md).
 
-Browse [stampui.com](https://stampui.com) to understand the component library and visual system. StampUI is dark-first, token-based, and intentionally minimal. Contributions that deviate from the design system will not be accepted.
+## Development setup
 
-Key rules:
-- No hardcoded hex values in `className` — use design tokens only (`bg-surface-2`, `text-muted-foreground`, etc.)
-- Conditional classNames always use `cx()`, never template literals
+The repo is self-contained and typechecks standalone:
+
+```bash
+git clone https://github.com/StampUI/ui
+cd ui
+npm install
+npm run typecheck
+```
+
+There is no preview app in this repo yet. To see a component render, drop it into any Next.js or Vite project with Tailwind CSS v4 (or a fresh `npx stampui init` project) along with `lib/cx.ts`. Every component's live playground is on [stampui.com](https://stampui.com). A local preview harness is on the roadmap.
+
+## Ways to contribute
+
+- **Bug reports**: something renders incorrectly or breaks at a certain screen size
+- **Accessibility issues and fixes**: these are prioritized; use the accessibility template
+- **Fixes**: typos, prop type corrections, behavior bugs
+- **New components**: primitives or blocks that fit the design system (propose first, see below)
+- **Documentation**: usage examples, clearer descriptions, edge cases
+
+## Design system rules
+
+StampUI is dark-first, token-based, and intentionally minimal. Browse [stampui.com](https://stampui.com) to understand the visual system before contributing. Contributions that deviate from it will not be accepted.
+
+- No hardcoded hex values in `className`; use design tokens only (`bg-surface-2`, `text-muted-foreground`, etc.)
+- Conditional classNames always use `cx()` from `@/lib/cx`, never template literals
 - No gradients, glassmorphism, glow effects, or colorful shadows
 - Hover states are subtle surface or border shifts only
-- All components must be `"use client"` and self-contained
+- All components are `"use client"` and self-contained
 
----
+## TypeScript expectations
 
-## Reporting a Bug
+- `strict` mode; `npm run typecheck` must pass (CI enforces this)
+- No `any` in exported props or interfaces, no `@ts-ignore`
+- Named exports only, no default exports
+- Explicit, exported prop interfaces
 
-Use the [Bug Report](./.github/ISSUE_TEMPLATE/bug_report.md) template. Include:
-- Component name and version
-- What you expected vs what happened
-- A minimal reproduction (StackBlitz or CodeSandbox link is ideal)
+## Accessibility expectations
 
----
+- Don't remove ARIA attributes, focus management, or keyboard handlers to simplify markup
+- Interactive elements must be reachable and operable by keyboard
+- Icon-only controls need an accessible name (`aria-label` or visually hidden text)
+- Animations should respect `prefers-reduced-motion`
+- If you're fixing an a11y issue, say which WAI-ARIA pattern or WCAG criterion it addresses if you know it; if you don't, describe the observed problem and we'll map it
 
-## Proposing a New Component
+## Submitting a pull request
 
-Open a [Feature Request](./.github/ISSUE_TEMPLATE/feature_request.md) before building anything. Proposals that duplicate an existing component or violate the design system will be closed.
+1. Fork and branch from `main`
+2. Keep changes focused: one component or fix per PR
+3. `npm run typecheck` passes
+4. **Visual changes include before/after screenshots** (dark mode at minimum; light mode too if the component supports it)
+5. Describe what changed and why; link the issue if one exists
+6. Update usage docs/examples if the public API of a component changed
 
-A good proposal answers:
+Review process: the maintainer reviews PRs, usually within a few days. Small fixes merge quickly; new components go through the proposal discussion first. CI must be green before merge.
+
+## Proposing a new component
+
+Open a [component request](./.github/ISSUE_TEMPLATE/component_request.md) before building anything. A good proposal answers:
+
 - What problem does this solve?
 - Why is it not covered by an existing component?
-- What does the API look like?
+- What does the API look like (props sketch)?
 
----
+Check the [free component index](./README.md#free-component-index) and the [stampui.com catalog](https://stampui.com/blocks) first: proposals that duplicate an existing free component will be closed, and if the idea overlaps a pro block we'll say so in the issue up front rather than after you've built it.
 
-## Submitting a Pull Request
+## Commit messages
 
-1. Fork the repository and create a branch from `main`
-2. Keep changes focused — one component or fix per PR
-3. Write a clear description: what changed and why
-
----
-
-## Code Style
-
-- TypeScript only — no `.js` files
-- No `any` types, no `@ts-ignore`
-- Named exports only — no default exports
-- No comments explaining what the code does — only comments for non-obvious constraints
-
----
-
-## Commit Messages
-
-Use the imperative form, lowercase, short:
+Imperative, lowercase, short:
 
 ```
 fix: button disabled state opacity
 add: number-stepper component
-update: card shadow tokens
+docs: usage examples for dialog
 ```
 
----
+## Code of conduct
+
+This project follows the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## License
 
