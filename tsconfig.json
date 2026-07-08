@@ -16,5 +16,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["components/**/*.tsx", "lib/**/*.ts", "types.ts"]
+  "include": ["components/**/*.tsx", "lib/**/*.ts", "types.ts", "examples/**/*.tsx"]
 }
