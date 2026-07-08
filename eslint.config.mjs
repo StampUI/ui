@@ -34,5 +34,13 @@ export default tseslint.config(
       "@typescript-eslint/ban-ts-comment": "error",
       "no-unused-vars": "off",
     },
+  },
+  {
+    // Build-tool config files: a default export is the contract these
+    // tools expect, not a design-system violation.
+    files: ["*.config.{ts,mts,cts}"],
+    rules: {
+      "no-restricted-syntax": "off",
+    },
   }
 )
