@@ -16,7 +16,6 @@ What we intend to work on in the free, open-source part of StampUI. This is a di
 
 - **Integrity checksums**: implement the decided `sha256-` per-file field in `@stampui/blocks` and the CLI's install path.
 - **Shared-file version tracking**: `stampui.lock.json` tracking `registry:ui` files the same way it tracks blocks, unblocks `stampui diff` (tracked in the [CLI repo](https://github.com/StampUI/cli/issues/1)).
-- **registry-explorer.tsx**: finish or remove the half-built category/difficulty/status filter UI ([#10](https://github.com/StampUI/ui/issues/10)).
 - **Disclosure chevron / drawer-sheet direction**: design decisions flagged in the RTL audit (whether collapse carets mirror under RTL, whether `Sheet`'s `side` prop should be direction-aware) still need a call.
 
 ## Medium term
