@@ -53,7 +53,7 @@ A component you can't read is a component you can't change. Runtime component li
 
 Source-owned components suit AI-assisted workflows for a plain mechanical reason: coding agents work on files in your repository. A StampUI component is such a file, so Claude Code, Cursor, or Copilot can inspect, refactor, restyle, and extend it exactly like code you wrote yourself, with no opaque package boundary in the way.
 
-- **MCP server**: [`@stampui/mcp`](https://www.npmjs.com/package/@stampui/mcp) exposes `list_blocks`, `search_blocks`, `get_block`, and `stamp_block`, so an agent can discover and install blocks without leaving the editor.
+- **MCP server**: [`@stampui/mcp`](https://www.npmjs.com/package/@stampui/mcp) ([source](https://github.com/StampUI/mcp)) exposes `list_blocks`, `search_blocks`, `get_block`, and `stamp_block`, so an agent can discover and install blocks without leaving the editor.
 - **Predictable conventions**: every component uses the same patterns (design tokens only, `cx()` for conditional classes, named exports), which keeps agent-made edits consistent. See [AGENTS.md](./AGENTS.md) for editing guidelines aimed at agents.
 - **Deterministic structure**: components live at stable paths (`components/core/*`, `components/blocks/*`) that the block manifest documents, so tooling can reason about what is installed. The manifest format is documented in [docs/block-manifest.md](./docs/block-manifest.md).
 
