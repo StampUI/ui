@@ -103,7 +103,10 @@ lib/
   cx.ts      class utility used by all components (clsx + tailwind-merge)
 types.ts     shared types (BlockManifest and friends)
 docs/        block manifest specification
+examples/    short usage snippets for commonly installed components
 ```
+
+See [examples/](./examples) for copyable usage snippets (button, input, dialog, dropdown menu, select, tabs, table, card, badge, tooltip).
 
 ## Free component index
 
