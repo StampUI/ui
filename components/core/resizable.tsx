@@ -189,8 +189,22 @@ export function ResizableHandle({
 
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     const step = 2
-    const isForward = direction === "horizontal" ? e.key === "ArrowRight" : e.key === "ArrowDown"
-    const isBack = direction === "horizontal" ? e.key === "ArrowLeft" : e.key === "ArrowUp"
+    // Per the WAI-ARIA APG (separator/slider pattern): in a right-to-left
+    // layout, the physical Left/Right arrow keys swap meaning so the key
+    // still moves the boundary toward the same side of the screen. Vertical
+    // resizing is unaffected since dir only mirrors the inline (horizontal)
+    // axis. Read the nearest dir attribute (matching how apps actually
+    // declare directionality, typically on <html> or a wrapping section)
+    // rather than getComputedStyle, since CSS `direction` is an inherited
+    // property whose cascade jsdom (unlike real browsers) doesn't model,
+    // making this approach both correct and unit-testable.
+    const isRtl =
+      direction === "horizontal" &&
+      handleRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl"
+    const isForward =
+      direction === "horizontal" ? e.key === (isRtl ? "ArrowLeft" : "ArrowRight") : e.key === "ArrowDown"
+    const isBack =
+      direction === "horizontal" ? e.key === (isRtl ? "ArrowRight" : "ArrowLeft") : e.key === "ArrowUp"
     if (!isForward && !isBack) return
     e.preventDefault()
     const delta = isForward ? step : -step
