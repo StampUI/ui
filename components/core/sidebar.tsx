@@ -63,6 +63,7 @@ export function SidebarItem({ icon, label, active, badge, collapsed, href, class
     <Tag
       {...(href ? { href } : { type: "button" })}
       aria-current={active ? "page" : undefined}
+      aria-label={collapsed ? label : undefined}
       title={collapsed ? label : undefined}
       className={cx(
         "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors w-full",
@@ -100,6 +101,9 @@ export function SidebarGroup({ icon, label, defaultOpen = false, collapsed, clas
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label={collapsed ? label : undefined}
+        title={collapsed ? label : undefined}
         className={cx(
           "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-surface-2/60 hover:text-foreground transition-colors w-full",
           collapsed && "justify-center px-2"
