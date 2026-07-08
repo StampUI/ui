@@ -22,7 +22,7 @@ const dotStyles = cva("relative inline-flex rounded-full shrink-0", {
   defaultVariants: { status: "online", size: "md" },
 })
 
-const pingStyles = cva("absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping", {
+const pingStyles = cva("absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping motion-reduce:animate-none", {
   variants: {
     status: {
       online: "bg-green-500",

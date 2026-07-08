@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion"
 
 interface ProgressRingProps {
   value?: number
@@ -23,10 +24,15 @@ export function ProgressRing({
   className,
 }: ProgressRingProps) {
   const [current, setCurrent] = React.useState(0)
+  const reducedMotion = usePrefersReducedMotion()
   React.useEffect(() => {
+    if (reducedMotion) {
+      setCurrent(value)
+      return
+    }
     const id = setTimeout(() => setCurrent(value), 60)
     return () => clearTimeout(id)
-  }, [value])
+  }, [value, reducedMotion])
 
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
@@ -56,7 +62,7 @@ export function ProgressRing({
           strokeDashoffset={offset}
           strokeLinecap="round"
           transform={`rotate(-90 ${center} ${center})`}
-          style={{ transition: "stroke-dashoffset 600ms ease-out" }}
+          style={{ transition: reducedMotion ? "none" : "stroke-dashoffset 600ms ease-out" }}
         />
       </svg>
       {showValue && (
