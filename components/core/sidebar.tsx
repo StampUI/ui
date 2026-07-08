@@ -118,7 +118,7 @@ export function SidebarGroup({ icon, label, defaultOpen = false, collapsed, clas
         )}
       </button>
       {open && !collapsed && (
-        <div className="ml-3 border-l border-border pl-3 flex flex-col gap-0.5">
+        <div className="ms-3 border-s border-border ps-3 flex flex-col gap-0.5">
           {children}
         </div>
       )}

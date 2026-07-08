@@ -19,7 +19,7 @@ export const ScrollArea = React.forwardRef<
     {(orientation === "vertical" || orientation === "both") && (
       <RadixScrollArea.Scrollbar
         orientation="vertical"
-        className="flex touch-none select-none transition-colors w-2.5 border-l border-l-transparent p-px"
+        className="flex touch-none select-none transition-colors w-2.5 border-s border-s-transparent p-px"
       >
         <RadixScrollArea.Thumb className="relative flex-1 rounded-full bg-border hover:bg-border-strong transition-colors" />
       </RadixScrollArea.Scrollbar>

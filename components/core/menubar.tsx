@@ -65,7 +65,7 @@ export function MenubarMenu({ id, trigger, children }: MenubarMenuProps) {
         <div
           role="menu"
           onClick={(e) => e.stopPropagation()}
-          className="absolute left-0 top-full mt-1 z-50 min-w-40 rounded-lg border border-border bg-background p-1 shadow-lg"
+          className="absolute start-0 top-full mt-1 z-50 min-w-40 rounded-lg border border-border bg-background p-1 shadow-lg"
         >
           {children}
         </div>
@@ -92,7 +92,7 @@ export function MenubarItem({ className, children, inset, shortcut, ...props }: 
         "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm text-foreground",
         "transition-colors hover:bg-surface-2 focus-visible:bg-surface-2 outline-none",
         "disabled:pointer-events-none disabled:opacity-50",
-        inset && "pl-8",
+        inset && "ps-8",
         className
       )}
       {...props}
