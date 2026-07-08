@@ -17,9 +17,9 @@
 - [ ] No unused imports
 - [ ] No `any` types or `@ts-ignore`
 - [ ] Self-contained, no external state or fetch calls
-- [ ] Renders without errors at the preview route
-- [ ] `BLOCK-CHECKLIST.md` reviewed and satisfied
+- [ ] `npm run typecheck` passes
+- [ ] No pro/commercial source or private registry content included
 
-## Screenshots or preview URL
+## Screenshots
 
-<!-- If this changes a component's appearance, include a screenshot or link to the preview -->
+<!-- Required for visual changes: before/after, dark mode at minimum -->
