@@ -6,6 +6,37 @@ import { Search, X } from "lucide-react"
 import { cx } from "@/lib/cx"
 
 // ── Root ──────────────────────────────────────────────────────────────────────
+//
+// CommandInput and CommandList/CommandItem are siblings, so the roving
+// "active" selection (APG Editable Combobox with List Autocomplete: focus
+// stays on the input, ArrowUp/ArrowDown move a virtual selection reported via
+// aria-activedescendant) is coordinated through this context rather than
+// through DOM focus.
+
+interface CommandItemEntry {
+  id: string
+  disabled?: boolean
+  select: () => void
+}
+
+interface CommandCtx {
+  listId: string
+  activeId: string | null
+  register: (entry: CommandItemEntry) => () => void
+  move: (delta: 1 | -1) => void
+  moveToEdge: (edge: "start" | "end") => void
+  selectActive: () => void
+}
+
+const CommandContext = React.createContext<CommandCtx | null>(null)
+
+function useCommandContext(componentName: string): CommandCtx {
+  const ctx = React.useContext(CommandContext)
+  if (!ctx) {
+    throw new Error(`${componentName} must be used inside <Command>`)
+  }
+  return ctx
+}
 
 export interface CommandProps {
   open?: boolean
@@ -15,13 +46,55 @@ export interface CommandProps {
 }
 
 export function Command({ open, onOpenChange, children, className }: CommandProps) {
+  const listId = React.useId()
+  const itemsRef = React.useRef<CommandItemEntry[]>([])
+  const [activeId, setActiveId] = React.useState<string | null>(null)
+
+  const register = React.useCallback((entry: CommandItemEntry) => {
+    itemsRef.current.push(entry)
+    setActiveId((current) => current ?? enabledItems(itemsRef.current)[0]?.id ?? null)
+    return () => {
+      itemsRef.current = itemsRef.current.filter((i) => i.id !== entry.id)
+      setActiveId((current) => (current === entry.id ? enabledItems(itemsRef.current)[0]?.id ?? null : current))
+    }
+  }, [])
+
+  const move = React.useCallback((delta: 1 | -1) => {
+    const items = enabledItems(itemsRef.current)
+    if (items.length === 0) return
+    const currentIndex = items.findIndex((i) => i.id === activeId)
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + delta + items.length) % items.length
+    setActiveId(items[nextIndex].id)
+  }, [activeId])
+
+  const moveToEdge = React.useCallback((edge: "start" | "end") => {
+    const items = enabledItems(itemsRef.current)
+    if (items.length === 0) return
+    setActiveId(edge === "start" ? items[0].id : items[items.length - 1].id)
+  }, [])
+
+  const selectActive = React.useCallback(() => {
+    itemsRef.current.find((i) => i.id === activeId)?.select()
+  }, [activeId])
+
+  const ctx = React.useMemo<CommandCtx>(
+    () => ({ listId, activeId, register, move, moveToEdge, selectActive }),
+    [listId, activeId, register, move, moveToEdge, selectActive]
+  )
+
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
-      <div className={className}>
-        {children}
-      </div>
+      <CommandContext.Provider value={ctx}>
+        <div className={className}>
+          {children}
+        </div>
+      </CommandContext.Provider>
     </RadixDialog.Root>
   )
+}
+
+function enabledItems(items: CommandItemEntry[]): CommandItemEntry[] {
+  return items.filter((i) => !i.disabled)
 }
 
 export const CommandTrigger = RadixDialog.Trigger
@@ -60,13 +133,46 @@ export interface CommandInputProps {
 }
 
 export function CommandInput({ placeholder = "Search...", value, onValueChange }: CommandInputProps) {
+  const { listId, activeId, move, moveToEdge, selectActive } = useCommandContext("CommandInput")
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault()
+        move(1)
+        break
+      case "ArrowUp":
+        e.preventDefault()
+        move(-1)
+        break
+      case "Home":
+        e.preventDefault()
+        moveToEdge("start")
+        break
+      case "End":
+        e.preventDefault()
+        moveToEdge("end")
+        break
+      case "Enter":
+        e.preventDefault()
+        selectActive()
+        break
+    }
+  }
+
   return (
     <div className="flex items-center gap-2 border-b border-border px-4 py-3">
       <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
       <input
         autoFocus
+        role="combobox"
+        aria-expanded="true"
+        aria-controls={listId}
+        aria-activedescendant={activeId ?? undefined}
+        aria-autocomplete="list"
         value={value}
         onChange={(e) => onValueChange?.(e.target.value)}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       />
@@ -87,8 +193,9 @@ export function CommandInput({ placeholder = "Search...", value, onValueChange }
 // ── List ───────────────────────────────────────────────────────────────────────
 
 export function CommandList({ children, className }: { children: React.ReactNode; className?: string }) {
+  const { listId } = useCommandContext("CommandList")
   return (
-    <div className={cx("max-h-72 overflow-y-auto py-2", className)}>
+    <div id={listId} role="listbox" className={cx("max-h-72 overflow-y-auto py-2", className)}>
       {children}
     </div>
   )
@@ -134,15 +241,43 @@ export interface CommandItemProps {
 }
 
 export function CommandItem({ children, onSelect, disabled, className, shortcut }: CommandItemProps) {
+  const { activeId, register } = useCommandContext("CommandItem")
+  const id = React.useId()
+  const isActive = activeId === id
+
+  // Keep the latest onSelect/disabled in a ref so the registration effect
+  // below can run once per mount instead of re-registering (and briefly
+  // dropping out of the active-item list) whenever a parent re-render hands
+  // CommandItem a new inline onSelect closure.
+  const latest = React.useRef({ onSelect, disabled })
+  React.useEffect(() => {
+    latest.current = { onSelect, disabled }
+  })
+
+  React.useEffect(
+    () => register({
+      id,
+      get disabled() { return latest.current.disabled },
+      select: () => !latest.current.disabled && latest.current.onSelect?.(),
+    }),
+    [id, register]
+  )
+
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onSelect}
+    <div
+      id={id}
+      role="option"
+      aria-selected={isActive}
+      aria-disabled={disabled || undefined}
+      // Not in the page Tab order: per the APG combobox-with-listbox pattern,
+      // keyboard users navigate options from CommandInput (ArrowUp/Down +
+      // Enter) via aria-activedescendant, not by tabbing to each option.
+      tabIndex={-1}
+      onClick={() => !disabled && onSelect?.()}
       className={cx(
-        "flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-foreground outline-none transition-colors",
-        "hover:bg-surface-2 focus:bg-surface-2",
-        "disabled:pointer-events-none disabled:opacity-50",
+        "flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-foreground outline-none transition-colors cursor-default",
+        isActive ? "bg-surface-2" : "hover:bg-surface-2",
+        disabled && "pointer-events-none opacity-50",
         className
       )}
     >
@@ -152,7 +287,7 @@ export function CommandItem({ children, onSelect, disabled, className, shortcut 
           {shortcut}
         </kbd>
       )}
-    </button>
+    </div>
   )
 }
 
