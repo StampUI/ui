@@ -71,7 +71,12 @@ export function CommandInput({ placeholder = "Search...", value, onValueChange }
         className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
       />
       {value && (
-        <button onClick={() => onValueChange?.("")} className="text-muted-foreground hover:text-foreground transition-colors">
+        <button
+          type="button"
+          onClick={() => onValueChange?.("")}
+          aria-label="Clear search"
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
           <X className="h-3.5 w-3.5" />
         </button>
       )}

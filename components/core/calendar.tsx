@@ -85,6 +85,7 @@ export function Calendar({
         <button
           type="button"
           onClick={prevMonth}
+          aria-label="Previous month"
           className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -95,6 +96,7 @@ export function Calendar({
         <button
           type="button"
           onClick={nextMonth}
+          aria-label="Next month"
           className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors"
         >
           <ChevronRight className="h-4 w-4" />
