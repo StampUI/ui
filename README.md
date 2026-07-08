@@ -104,9 +104,10 @@ lib/
 types.ts     shared types (BlockManifest and friends)
 docs/        block manifest specification
 examples/    short usage snippets for commonly installed components
+preview/     local Vite harness for rendering examples/ while developing
 ```
 
-See [examples/](./examples) for copyable usage snippets (button, input, dialog, dropdown menu, select, tabs, table, card, badge, tooltip).
+See [examples/](./examples) for copyable usage snippets (button, input, dialog, dropdown menu, select, tabs, table, card, badge, tooltip), and [preview/](./preview) to render them locally.
 
 ## Free component index
 

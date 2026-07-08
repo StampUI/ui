@@ -25,7 +25,15 @@ npm install
 npm run typecheck
 ```
 
-There is no preview app in this repo yet. To see a component render, drop it into any Next.js or Vite project with Tailwind CSS v4 (or a fresh `npx stampui init` project) along with `lib/cx.ts`. Every component's live playground is on [stampui.com](https://stampui.com). A local preview harness is on the roadmap.
+To see a component render locally, use the [preview harness](./preview):
+
+```bash
+cd preview
+npm install
+npm run dev
+```
+
+It renders whatever is in `examples/` with the real dark-mode tokens, useful for the before/after screenshots visual PRs need. To preview something without an example yet, add one first (see [examples/README.md](./examples/README.md)). Every component's live playground is also on [stampui.com](https://stampui.com).
 
 ## Ways to contribute
 

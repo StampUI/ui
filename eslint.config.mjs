@@ -5,7 +5,11 @@ import globals from "globals"
 
 export default tseslint.config(
   {
-    ignores: ["node_modules/**"],
+    // preview/ is a self-contained dev-only Vite app with its own
+    // package.json, tsconfig, and lint concerns (it isn't part of the
+    // published component source); exclude it here rather than fold its
+    // build output and dependencies into the component library's lint run.
+    ignores: ["**/node_modules/**", "preview/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -38,7 +42,7 @@ export default tseslint.config(
   {
     // Build-tool config files: a default export is the contract these
     // tools expect, not a design-system violation.
-    files: ["*.config.{ts,mts,cts}"],
+    files: ["**/*.config.{ts,mts,cts}"],
     rules: {
       "no-restricted-syntax": "off",
     },
