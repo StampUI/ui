@@ -15,4 +15,4 @@ Short, copyable usage examples for the components people install first. Each fil
 | [table.tsx](./table.tsx) | Table, TableHeader, TableBody, TableRow, TableHead, TableCell, Badge |
 | [tooltip.tsx](./tooltip.tsx) | TooltipProvider, Tooltip, TooltipTrigger, TooltipContent |
 
-These are plain `.tsx` files, not a runnable app: copy the relevant snippet into your project (see the main [README](../README.md) for the CLI install flow), or open the file to read it directly. A local preview harness that renders these live is tracked in [ROADMAP.md](../ROADMAP.md).
+Copy the relevant snippet into your project (see the main [README](../README.md) for the CLI install flow), or run the [local preview harness](../preview) to see any of these rendered live with the real design tokens.

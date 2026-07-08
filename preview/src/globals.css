@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * These tokens match apps/web/app/globals.css in the main StampUI site
+ * (the .dark values only; this harness is dark-only by design, see
+ * design-rule.md). Keep in sync if the token system changes: a harness with
+ * drifted colors is worse than no harness, since it misleads screenshot PRs.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-raised: var(--surface-raised);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-foreground-soft: var(--foreground-soft);
+
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-border-strong: var(--border-strong);
+
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #070708;
+  --surface: #09090B;
+  --surface-2: #101114;
+  --surface-3: #15171A;
+  --surface-raised: #1A1D21;
+
+  --foreground: #FAFAFA;
+  --foreground-soft: #EAEAEA;
+  --muted-foreground: #A1A1AA;
+
+  --primary: #FAFAFA;
+  --primary-hover: #F2F2F2;
+  --primary-foreground: #070708;
+
+  --secondary: #15171A;
+  --secondary-foreground: #D6D6DB;
+
+  --muted: #111317;
+  --muted-2: #181A1E;
+
+  --card: #09090B;
+  --card-foreground: #FAFAFA;
+
+  --popover: #09090B;
+  --popover-foreground: #FAFAFA;
+
+  --border: #23252A;
+  --border-soft: #181A1E;
+  --border-strong: #33363D;
+
+  --input: #101114;
+  --ring: #D4D4D8;
+
+  --success: #4ADE80;
+  --warning: #FBBF24;
+  --danger: #F87171;
+
+  --radius: 0.75rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
