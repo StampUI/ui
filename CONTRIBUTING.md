@@ -57,7 +57,10 @@ StampUI is dark-first, token-based, and intentionally minimal. Browse [stampui.c
 - Don't remove ARIA attributes, focus management, or keyboard handlers to simplify markup
 - Interactive elements must be reachable and operable by keyboard
 - Icon-only controls need an accessible name (`aria-label` or visually hidden text)
-- Animations should respect `prefers-reduced-motion`
+- Animations should respect `prefers-reduced-motion`. Two mechanisms depending on how the animation is built:
+  - CSS via Tailwind utility classes (`animate-bounce`, `animate-pulse`, arbitrary `animate-[...]`): add the `motion-reduce:animate-none` variant. No JS needed.
+  - RAF loops, SVG SMIL (`<animate>`, `<animateTransform>`), or JS timers: use `usePrefersReducedMotion()` from `lib/use-reduced-motion.ts`.
+  - Policy: purely decorative/ambient loops (orbit-trail, marquee, gradient pans, cursor blinks) stop entirely. Status/feedback indicators (typing dots, status pulse, loading spinners) keep the shape visible but stop moving, since removing them would remove information. Value-driven tweens (animated numbers, progress rings) jump straight to the final value instead of easing.
 - If you're fixing an a11y issue, say which WAI-ARIA pattern or WCAG criterion it addresses if you know it; if you don't, describe the observed problem and we'll map it
 
 ## Submitting a pull request
