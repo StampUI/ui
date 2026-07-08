@@ -1,6 +1,6 @@
 # Block manifest specification
 
-Status: **draft, pre-1.0**. The format described here is what the `stampui` CLI, the stampui.com registry, and the `@stampui/mcp` server consume today. It may change before being frozen as v1; changes will be noted in the [CHANGELOG](../CHANGELOG.md). Feedback is welcome via the RFC issue template.
+Status: **v1.0, fields decided; two items pending implementation** (see [Decisions](#decisions-2026-07-08) below). The format described here is what the `stampui` CLI, the stampui.com registry, and the `@stampui/mcp` server consume today. Everything under [Fields](#fields) reflects the manifest as it ships in `@stampui/blocks` right now, not a proposal; `integrity` and lock-file version tracking for shared files are decided but not yet built, tracked in linked issues. Changes will be noted in the [CHANGELOG](../CHANGELOG.md). Feedback is welcome via the RFC issue template.
 
 ## What a block manifest is
 
@@ -79,7 +79,7 @@ A real free block, as it appears in the registry:
 | Field | Type | Meaning |
 |-------|------|---------|
 | `difficulty` | `"beginner" \| "intermediate" \| "advanced"` | Rough integration effort |
-| `frameworks` | `string[]` | Environments the block is verified in (`nextjs`, `react`, `vite`) |
+| `frameworks` | `string[]` | Environments the block is verified in. The type is an informal `string[]`; see [Decisions](#decisions-2026-07-08) for the enumerated set of values it should be restricted to |
 | `dependencies` | `string[]` | npm packages the block's source imports (beyond React itself). The CLI prints an install command for these; it does not install them silently |
 | `files` | `BlockFile[]` | The source files that make up the block; see below |
 | `tokens` | `string[]` | Design tokens (CSS variables) the block consumes; useful for theming tools |
@@ -128,11 +128,44 @@ Nothing in the format is specific to StampUI's catalog. A third-party registry n
 2. A source store where `files[].path` can be resolved (an npm package, a git repo, or an HTTP endpoint).
 3. Optionally, an authenticated endpoint for gated content, keyed however you like; the manifest only needs `status` to say that gating exists.
 
-If you implement it, open an RFC issue; interoperability questions (e.g. integrity checksums, which the format does not have yet) are exactly what we want to resolve before freezing v1.
+If you implement it, and especially if you hit a case the [Decisions](#decisions-2026-07-08) above don't cover, open an RFC issue.
 
-## Known gaps (pre-1.0)
+## Decisions (2026-07-08)
 
-- No integrity/checksum field yet; installers trust the source store
-- No per-file version, only per-block
-- No declared conflict semantics when two blocks share a `registry:ui` file at different versions
-- Framework identifiers are informal strings
+The four open questions from the [manifest spec RFC](https://github.com/StampUI/ui/issues/7) are resolved as follows. "Decided" means this is the direction implementations should build toward; "implemented" means it's live today. Where the two differ, it's called out explicitly rather than left ambiguous.
+
+### 1. Integrity: decided, not yet implemented
+
+Each `BlockFile` will gain an optional `integrity` field: a [Subresource-Integrity-style](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) string, `sha256-<base64-digest>`, computed by whoever publishes the file (StampUI's build for its own catalog; a third-party registry computes its own). Rules for installers:
+
+- If `integrity` is present, verify it before writing the file; refuse and surface an error on mismatch.
+- If absent, install as today; this keeps the field additive so existing manifests without it don't break.
+- The digest covers file content only, not the manifest JSON itself.
+
+Not yet in `@stampui/blocks`'s shipped types or the CLI's install path. Tracked for implementation.
+
+### 2. Shared-file conflicts: decided, not yet implemented
+
+A `registry:ui` file (e.g. `components/core/accordion.tsx`) can be pulled in by multiple blocks. Today's behavior, an installer treating an already-present file as satisfied and never touching it again, avoids clobbering local edits but means a shared file installed by an old block never picks up fixes shipped in a newer one.
+
+Decision: `stampui.lock.json` will track `registry:ui` files the same way it tracks top-level blocks (path → installed version), not just leave them implicit. `stampui update` can then detect that a shared file's recorded version is behind what a currently-installed block's manifest declares, and offer to update it explicitly, the same confirm-then-overwrite flow blocks already use, rather than silently overwriting or silently ignoring it. This also unblocks [`stampui diff`](https://github.com/StampUI/cli/issues/1), which needs a recorded baseline version to diff against.
+
+Not yet implemented in the CLI's lock-file schema.
+
+### 3. Per-file versioning: decided against, for v1
+
+Not adding it. Full per-file version and changelog tracking multiplies bookkeeping (every file independently versioned) for a benefit, finer-grained update granularity, that shared-file version tracking (decision 2) already covers for the actual conflict case that motivated the question. Revisit only if decision 2 proves insufficient in practice.
+
+### 4. Framework identifiers: decided
+
+`frameworks` stays a plain `string[]` at the type level (no breaking type change), restricted in practice to:
+
+| Value | Status |
+|-------|--------|
+| `"react"` | in use |
+| `"nextjs"` | in use |
+| `"vite"` | in use |
+| `"remix"` | reserved; the CLI's `init` already detects Remix projects, no manifest currently declares it |
+| `"astro"` | reserved, not yet supported by the CLI |
+
+Any other value should be treated by installers as unsupported-but-not-fatal (skip framework-specific behavior, still allow install).

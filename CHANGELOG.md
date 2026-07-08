@@ -5,7 +5,11 @@ Notable changes to the free component set and this repository. Component-level v
 ## Unreleased
 
 - Repository is now self-contained: added `lib/cx.ts` and `types.ts`, which components referenced but which were missing from the public source
-- All 94 component and block files typecheck standalone (`npm run typecheck`), enforced by CI
+- All 94 component and block files typecheck standalone (`npm run typecheck`), enforced by CI; ESLint added alongside it
+- Accessibility: added `aria-label`s to icon-only controls that lacked one (calendar nav, command clear-search, sidebar collapse toggle); all animated components now respect `prefers-reduced-motion`; `command.tsx` rewritten to the WAI-ARIA APG combobox-with-listbox pattern with keyboard navigation, covered by a new test suite (vitest + Testing Library)
+- RTL: fixed physical-direction CSS in sidebar, menubar, navigation-menu, scroll-area, and pagination; fixed a real keyboard-interaction bug in `resizable.tsx` where Left/Right arrow meaning didn't swap under `dir="rtl"` (WAI-ARIA APG separator pattern)
+- Added `examples/` with usage snippets for the 10 most-installed components
+- Block manifest spec: resolved the four open RFC questions (integrity, shared-file conflicts, per-file versioning, framework identifiers), see `docs/block-manifest.md`
 - Documentation: rewritten README, AGENTS.md (guidelines for AI coding agents), ROADMAP.md, SECURITY.md, block manifest specification (`docs/block-manifest.md`)
 - Expanded issue templates (accessibility, documentation, component request, RFC)
 
