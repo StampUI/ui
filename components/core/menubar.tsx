@@ -10,7 +10,7 @@ const MenubarContext = React.createContext<MenubarCtx>({ open: null, setOpen: ()
 
 // ── Root ──────────────────────────────────────────────────────────────────
 
-export interface MenubarProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type MenubarProps = React.HTMLAttributes<HTMLDivElement>
 
 export function Menubar({ className, children, ...props }: MenubarProps) {
   const [open, setOpen] = React.useState<string | null>(null)

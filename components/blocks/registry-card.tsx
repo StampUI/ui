@@ -28,7 +28,7 @@ export function RegistryCard({
   className,
   ...props
 }: RegistryCardProps) {
-  const { title, slug, description, category, status, previewPath, difficulty, frameworks, dependencies, promptReady, version, licenseRequired } = block
+  const { title, slug, description, category, status, previewPath, promptReady, version, licenseRequired } = block
   const isGated = licenseRequired || status === "pro" || status === "locked"
 
   return (

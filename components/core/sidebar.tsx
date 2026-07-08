@@ -73,7 +73,7 @@ export function SidebarItem({ icon, label, active, badge, collapsed, href, class
         collapsed && "justify-center px-2",
         className
       )}
-      {...(props as any)}
+      {...(props as React.ComponentPropsWithoutRef<"a"> & React.ComponentPropsWithoutRef<"button">)}
     >
       {icon && <span className="shrink-0 text-[1em]">{icon}</span>}
       {!collapsed && <span className="flex-1 truncate">{label}</span>}
