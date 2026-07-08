@@ -35,7 +35,7 @@ export function InputGroup({ left, right, children, className }: InputGroupProps
   )
 }
 
-interface InputAddonProps extends React.HTMLAttributes<HTMLSpanElement> {}
+type InputAddonProps = React.HTMLAttributes<HTMLSpanElement>
 
 export function InputAddon({ className, ...props }: InputAddonProps) {
   return (

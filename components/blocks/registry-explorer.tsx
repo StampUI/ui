@@ -2,8 +2,7 @@
 
 import * as React from "react"
 import { useSearchParams } from "next/navigation"
-import { Check, Command } from "lucide-react"
-import { cx } from "@/lib/cx"
+import { Command } from "lucide-react"
 import { RegistryCard } from "./registry-card"
 import type { BlockManifest } from "../../types"
 

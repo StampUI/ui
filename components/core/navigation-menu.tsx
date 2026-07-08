@@ -11,7 +11,7 @@ const NavMenuContext = React.createContext<NavMenuCtx>({ open: null, setOpen: ()
 
 // ── Root ──────────────────────────────────────────────────────────────────
 
-export interface NavigationMenuProps extends React.HTMLAttributes<HTMLElement> {}
+export type NavigationMenuProps = React.HTMLAttributes<HTMLElement>
 
 export function NavigationMenu({ className, children, ...props }: NavigationMenuProps) {
   const [open, setOpen] = React.useState<string | null>(null)
