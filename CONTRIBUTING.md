@@ -69,7 +69,7 @@ StampUI is monochrome, token-based, and intentionally minimal, in dark (the defa
 - Interactive elements must be reachable and operable by keyboard
 - Icon-only controls need an accessible name (`aria-label` or visually hidden text)
 - Animations should respect `prefers-reduced-motion`. Two mechanisms depending on how the animation is built:
-  - CSS via Tailwind utility classes (`animate-bounce`, `animate-pulse`, arbitrary `animate-[...]`): add the `motion-reduce:animate-none` variant. No JS needed.
+  - CSS via Tailwind utility classes (`animate-bounce`, `animate-pulse`, arbitrary `animate-[...]`): add the `motion-reduce:animate-none` variant. No JS needed. When the animation or transition is set in an inline `style`, use the important form (`motion-reduce:animate-none!`, `motion-reduce:transition-none!`) so the utility wins.
   - RAF loops, SVG SMIL (`<animate>`, `<animateTransform>`), or JS timers: use `useReducedMotion()` from `@/components/core/reveal`, or wrap the effect in `MotionGate` (`components/effects/motion-gate.tsx`).
   - Policy: purely decorative/ambient loops (orbit-trail, marquee, gradient pans, cursor blinks) stop entirely. Status/feedback indicators (typing dots, status pulse, loading spinners) keep the shape visible but stop moving, since removing them would remove information. Value-driven tweens (animated numbers, progress rings) jump straight to the final value instead of easing.
 - If you're fixing an a11y issue, say which WAI-ARIA pattern or WCAG criterion it addresses if you know it; if you don't, describe the observed problem and we'll map it

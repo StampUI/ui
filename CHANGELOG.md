@@ -2,6 +2,16 @@
 
 Notable changes to the free component set and this repository. Component-level versions live in the block manifests (see [docs/block-manifest.md](./docs/block-manifest.md)).
 
+## 2026-11-07
+
+Fixes that earlier lived only in this repo now ship in `@stampui/blocks` itself, so `npx stampui add` installs them too. The sources here are again byte-identical to the package.
+
+- `command.tsx` follows the WAI-ARIA APG combobox-with-listbox pattern: focus stays on the input, ArrowUp/ArrowDown/Home/End move the active option (reported via `aria-activedescendant`, disabled options skipped, wrapping at the ends), Enter selects it. Option order follows the DOM, so it stays correct while a query filters the list, and pointer hover moves the active option. `CommandList` and `CommandItem` still render without a `Command` root. Test suite restored and extended.
+- RTL: logical-direction classes in sidebar, menubar, navigation-menu, scroll-area and pagination. `resizable.tsx` swaps the Left/Right arrow keys under `dir="rtl"` and inverts pointer drags there too. RTL arrow test restored.
+- `aria-label`s on icon-only controls: calendar month navigation, command clear-search, collapsed sidebar items and groups.
+- `prefers-reduced-motion`: orbit-trail, signal-arc and grid-wave drop their SMIL animations, typewriter-text shows the first word, animated-counter shows the final value (all via `useReducedMotion` from `reveal`, now a registry dependency of those blocks); loading-dots, typing-indicator, status-pulse, marquee, gradient-text and progress-ring use `motion-reduce:` utilities, and marquee hides its duplicate track.
+- registry-explorer: category, tier and difficulty filter chips (`aria-pressed`) with a clear-filters control; the empty state resets filters instead of navigating away. Filter tests restored.
+
 ## 2026-11-06
 
 Free sources synced with `@stampui/blocks` 2.1.0. The repo now holds 130 free files, exactly what `npx stampui add` installs.
@@ -16,7 +26,7 @@ Free sources synced with `@stampui/blocks` 2.1.0. The repo now holds 130 free fi
 - `types.ts`: `BlockManifest` gains `registryDependencies`.
 - Preview harness uses the exact CLI theme stylesheet and can switch between dark and light.
 - Tooling: `recharts` and `@shikijs/*` added to devDependencies, `eslint-plugin-react-hooks` 7, `lib/use-reduced-motion.ts` removed (Reveal ships `useReducedMotion`).
-- Not carried over: a few fixes made only in this repo are not in the synced sources yet, so they were dropped with their tests: the command palette's APG combobox rewrite, RTL fixes in layout primitives and `resizable.tsx`, the registry-explorer filter chips, `aria-label`s on icon-only controls (calendar navigation, command clear-search, sidebar collapse toggle), and `prefers-reduced-motion` handling in the small motion blocks. They are back on the [roadmap](./ROADMAP.md).
+- A few fixes made only in this repo (command combobox, RTL, filter chips, icon-only `aria-label`s, reduced motion in the small motion blocks) were briefly missing from this sync; they were moved into `@stampui/blocks` and are back as of 2026-11-07.
 
 ## Earlier repository work (before 2026-11-06)
 

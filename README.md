@@ -74,13 +74,16 @@ Coding agents work on files in your repository, and a StampUI component is such 
 
 ## Accessibility
 
-Interactive primitives (dialogs, menus, selects, tooltips and similar) are built on [Radix UI](https://www.radix-ui.com), which handles focus management, ARIA attributes and keyboard interaction. Text tokens are chosen to pass contrast in both themes. Effects and backgrounds respect `prefers-reduced-motion`.
+Interactive primitives (dialogs, menus, selects, tooltips and similar) are built on [Radix UI](https://www.radix-ui.com), which handles focus management, ARIA attributes and keyboard interaction. Text tokens are chosen to pass contrast in both themes.
+
+- **Command palette**: `command.tsx` follows the WAI-ARIA APG combobox-with-listbox pattern (focus stays on the input, arrow keys move `aria-activedescendant`, Enter selects), covered by tests.
+- **Icon-only controls** have accessible names (calendar navigation, command clear-search, collapsed sidebar items).
+- **RTL**: layout and navigation primitives (sidebar, menubar, navigation menu, scroll area, pagination) use logical-direction classes, and `resizable.tsx` swaps Left/Right arrow keys under `dir="rtl"`, covered by tests.
+- **Reduced motion**: effects, backgrounds and the small motion blocks (orbit trail, signal arc, grid wave, loading dots, typewriter text, animated counter, marquee) respect `prefers-reduced-motion`.
 
 Not done yet, and tracked rather than claimed:
 
-- A systematic audit of every component against the WAI-ARIA Authoring Practices (including the command palette combobox pattern and accessible names on icon-only controls)
-- An RTL audit of layout primitives (sidebar, menubar, navigation menu, resizable)
-- `prefers-reduced-motion` for the small motion blocks (orbit trail, signal arc, grid wave, loading dots, typewriter text, animated counter) and marquee
+- A systematic audit of every component against the WAI-ARIA Authoring Practices
 - Automated accessibility checks (axe) in CI
 
 If you hit an accessibility problem, please use the accessibility issue template; those reports are prioritized.
