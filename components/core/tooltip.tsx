@@ -4,8 +4,24 @@ import * as React from "react"
 import * as RadixTooltip from "@radix-ui/react-tooltip"
 import { cx } from "@/lib/cx"
 
-export const TooltipProvider = RadixTooltip.Provider
-export const Tooltip = RadixTooltip.Root
+// Radix throws when a Tooltip has no Provider above it. A fresh app has none,
+// so Tooltip brings its own unless an app-level TooltipProvider is present
+// (which keeps the shared delay and skip-delay grouping).
+const HasProvider = React.createContext(false)
+
+export function TooltipProvider(props: React.ComponentProps<typeof RadixTooltip.Provider>) {
+  return (
+    <HasProvider.Provider value>
+      <RadixTooltip.Provider {...props} />
+    </HasProvider.Provider>
+  )
+}
+
+export function Tooltip(props: React.ComponentProps<typeof RadixTooltip.Root>) {
+  const provided = React.useContext(HasProvider)
+  const root = <RadixTooltip.Root {...props} />
+  return provided ? root : <RadixTooltip.Provider delayDuration={300}>{root}</RadixTooltip.Provider>
+}
 export const TooltipTrigger = RadixTooltip.Trigger
 
 export const TooltipContent = React.forwardRef<
@@ -17,11 +33,7 @@ export const TooltipContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cx(
-        "z-50 max-w-xs overflow-hidden rounded-xl border border-border bg-card px-3 py-1.5 text-xs text-foreground shadow-md",
-        "animate-in fade-in-0 zoom-in-95",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "popup-surface z-50 max-w-xs overflow-hidden px-3 py-1.5 text-xs",
         className
       )}
       {...props}

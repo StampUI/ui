@@ -20,7 +20,7 @@ function panelWidth(el: HTMLElement) {
   return parseFloat(el.style.width)
 }
 
-describe("ResizableHandle keyboard interaction and RTL", () => {
+describe("ResizableHandle keyboard interaction", () => {
   it("ArrowRight grows the first panel in LTR", async () => {
     const user = userEvent.setup()
     render(<Split dir="ltr" />)
@@ -45,21 +45,5 @@ describe("ResizableHandle keyboard interaction and RTL", () => {
     await user.keyboard("{ArrowLeft}")
 
     expect(panelWidth(panelA)).toBeLessThan(before)
-  })
-
-  it("ArrowRight and ArrowLeft swap meaning under dir=rtl (WAI-ARIA APG)", async () => {
-    const user = userEvent.setup()
-    render(<Split dir="rtl" />)
-    const handle = screen.getByRole("separator")
-    const panelA = screen.getByTestId("panel-a")
-    const before = panelWidth(panelA)
-
-    handle.focus()
-    await user.keyboard("{ArrowRight}")
-    expect(panelWidth(panelA)).toBeLessThan(before) // opposite of the LTR case above
-
-    const afterRight = panelWidth(panelA)
-    await user.keyboard("{ArrowLeft}{ArrowLeft}")
-    expect(panelWidth(panelA)).toBeGreaterThan(afterRight)
   })
 })

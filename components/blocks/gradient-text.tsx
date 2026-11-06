@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
-import { usePrefersReducedMotion } from "@/lib/use-reduced-motion"
 
 interface GradientTextProps {
   children: React.ReactNode
@@ -15,19 +14,16 @@ interface GradientTextProps {
 
 export function GradientText({
   children,
-  colors = ["#FAFAFA", "#71717A", "#FAFAFA"],
+  colors = ["var(--foreground)", "var(--muted-foreground)", "var(--foreground)"],
   speed = 4,
   animate = true,
   as: Tag = "span" as keyof React.JSX.IntrinsicElements,
   className,
 }: GradientTextProps) {
-  const reducedMotion = usePrefersReducedMotion()
-  const shouldAnimate = animate && !reducedMotion
-
   const style: React.CSSProperties = {
     backgroundImage: `linear-gradient(90deg, ${colors.join(", ")}, ${colors[0]})`,
     backgroundSize: "300% 100%",
-    ...(shouldAnimate ? { animation: `gradient-pan ${speed}s linear infinite` } : {}),
+    ...(animate ? { animation: `gradient-pan ${speed}s linear infinite` } : {}),
   }
 
   const Component = Tag as React.ElementType

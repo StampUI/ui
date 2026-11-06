@@ -32,7 +32,7 @@ function LogoEntry({ item }: { item: LogoItem }) {
       className="h-5 w-auto object-contain opacity-50 transition-opacity duration-150 ease-out group-hover:opacity-75"
     />
   ) : (
-    <span className="text-xs font-semibold tracking-wide text-muted-foreground opacity-60 transition-opacity duration-150 ease-out group-hover:opacity-90">
+    <span className="text-xs font-semibold tracking-wide text-muted-foreground-soft transition-colors duration-150 ease-out group-hover:text-muted-foreground">
       {item.name}
     </span>
   )
@@ -61,15 +61,15 @@ export function SocialProofBar({
 }: SocialProofBarProps) {
   return (
     <div className={cx("w-full", className)}>
-      <div className="border-t border-[#23252A]" />
+      <div className="border-t border-border" />
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-6 py-8 sm:flex-row sm:gap-8">
         {label && (
-          <p className="shrink-0 text-xs text-muted-foreground opacity-60 sm:whitespace-nowrap">
+          <p className="shrink-0 text-xs text-muted-foreground-soft sm:whitespace-nowrap">
             {label}
           </p>
         )}
         {label && (
-          <div className="hidden h-4 w-px bg-[#23252A] sm:block" aria-hidden />
+          <div className="hidden h-4 w-px bg-border sm:block" aria-hidden />
         )}
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 sm:justify-start">
           {logos.map((logo, i) => (
@@ -77,7 +77,7 @@ export function SocialProofBar({
           ))}
         </div>
       </div>
-      <div className="border-b border-[#23252A]" />
+      <div className="border-b border-border" />
     </div>
   )
 }

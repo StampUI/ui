@@ -38,14 +38,14 @@ function AccordionItem({ question, answer }: FaqItem) {
   const [open, setOpen] = React.useState(false)
 
   return (
-    <div className="border-b border-[#23252A] last:border-b-0">
+    <div className="border-b border-border last:border-b-0">
       <button
         onClick={() => setOpen((v) => !v)}
         className={cx(
           "w-full flex items-center justify-between gap-4 py-5 text-left",
-          "text-sm font-medium text-[#FAFAFA] leading-snug",
+          "text-sm font-medium text-foreground leading-snug",
           "transition-colors duration-[170ms] ease-out",
-          "hover:text-[#FAFAFA]/80"
+          "hover:text-foreground/80"
         )}
         aria-expanded={open}
       >
@@ -78,12 +78,12 @@ export function FaqAccordion({
     <section className={cx("w-full py-16 px-6", className)}>
       <div className="max-w-2xl mx-auto">
         {title && (
-          <h2 className="text-2xl font-bold tracking-tight text-[#FAFAFA] mb-8">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground mb-8">
             {title}
           </h2>
         )}
 
-        <div className="rounded-xl border border-[#23252A] bg-[#09090B] px-6">
+        <div className="rounded-xl border border-border bg-card px-6">
           {items.map((item, i) => (
             <AccordionItem key={i} question={item.question} answer={item.answer} />
           ))}

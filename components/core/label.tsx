@@ -11,7 +11,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
       <label
         ref={ref}
         className={cx(
-          "block text-sm font-medium leading-none text-foreground",
+          "block text-sm font-medium leading-snug text-foreground",
           "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
           className,
         )}
@@ -19,7 +19,7 @@ export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
       >
         {children}
         {required && (
-          <span className="ml-1 text-red-400 select-none" aria-hidden="true">*</span>
+          <span className="ml-1 text-danger select-none" aria-hidden="true">*</span>
         )}
       </label>
     )

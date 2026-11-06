@@ -34,11 +34,11 @@ export function EmptyState({
         className
       )}
     >
-      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl border border-[#23252A] bg-[#09090B]">
+      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl border border-border bg-card">
         <Icon size={24} className="text-muted-foreground" strokeWidth={1.5} />
       </div>
 
-      <h3 className="text-sm font-semibold text-[#FAFAFA] mb-1.5">{title}</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-1.5">{title}</h3>
 
       {description && (
         <p className="text-sm text-muted-foreground max-w-xs leading-relaxed mb-6">

@@ -16,7 +16,7 @@ export const SelectTrigger = React.forwardRef<
   <RadixSelect.Trigger
     ref={ref}
     className={cx(
-      "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-border bg-surface-2 px-3 py-2 text-sm outline-none",
+      "flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-border bg-surface-2 px-3 py-2 text-sm text-foreground outline-none",
       "placeholder:text-muted-foreground",
       "hover:border-border-strong transition-colors",
       "focus-visible:border-border-strong focus-visible:bg-surface-3",
@@ -63,11 +63,7 @@ export const SelectContent = React.forwardRef<
       ref={ref}
       position={position}
       className={cx(
-        "relative z-50 max-h-60 min-w-[8rem] overflow-hidden rounded-xl border border-border bg-card shadow-lg",
-        "animate-in fade-in-0 zoom-in-95",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "popup-surface relative z-50 max-h-60 min-w-[8rem] overflow-hidden",
         position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className
       )}

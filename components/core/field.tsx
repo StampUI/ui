@@ -4,7 +4,7 @@ import { cx } from "@/lib/cx"
 
 export const Field = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cx("flex flex-col gap-1.5", className)} {...props} />
+    <div ref={ref} className={cx("flex flex-col gap-2.5", className)} {...props} />
   )
 )
 Field.displayName = "Field"
@@ -15,7 +15,7 @@ export const FieldLabel = React.forwardRef<
 >(({ className, children, required, ...props }, ref) => (
   <RadixLabel.Root
     ref={ref}
-    className={cx("text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)}
+    className={cx("text-sm font-medium leading-snug text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)}
     {...props}
   >
     {children}

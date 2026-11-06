@@ -71,7 +71,7 @@ export function Combobox({
         <RadixPopover.Content
           align="start"
           sideOffset={4}
-          className="z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] rounded-xl border border-border bg-card shadow-lg outline-none animate-in fade-in-0 zoom-in-95"
+          className="popup-surface z-50 w-[var(--radix-popover-trigger-width)] min-w-[12rem] outline-none"
         >
           <div className="flex items-center gap-2 border-b border-border px-3 py-2">
             <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />

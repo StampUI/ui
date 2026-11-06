@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cx } from "@/lib/cx"
 
 const alertVariants = cva(
-  "relative w-full rounded-xl border px-4 py-3.5 text-sm [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-3.5 [&>svg~*]:pl-7",
+  "relative w-full rounded-xl border px-4 py-3.5 text-sm animate-fade-in transition-colors duration-fast ease-out [&:has(>svg)]:grid [&:has(>svg)]:grid-cols-[1rem_1fr] [&:has(>svg)]:gap-x-3 [&:has(>svg)]:items-start [&>svg]:row-span-full [&>svg~*]:col-start-2",
   {
     variants: {
       variant: {
@@ -40,9 +40,9 @@ export const AlertTitle = React.forwardRef<
 AlertTitle.displayName = "AlertTitle"
 
 export const AlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <p ref={ref} className={cx("text-sm text-muted-foreground leading-relaxed", className)} {...props} />
+  <div ref={ref} className={cx("text-sm text-muted-foreground leading-relaxed", className)} {...props} />
 ))
 AlertDescription.displayName = "AlertDescription"

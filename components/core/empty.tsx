@@ -12,7 +12,7 @@ export function Empty({ icon, title, description, action, className, ...props }:
   return (
     <div
       className={cx(
-        "flex flex-col items-center justify-center gap-3 px-6 py-12 text-center",
+        "flex flex-col items-center justify-center gap-3 px-6 py-12 text-center animate-fade-in",
         className
       )}
       {...props}

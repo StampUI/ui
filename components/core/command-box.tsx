@@ -10,7 +10,7 @@ export function CommandBox({ command, className, ...props }: CommandBoxProps) {
   return (
     <div
       className={cx(
-        "relative flex w-full max-w-sm items-center justify-between rounded-lg border bg-muted/50 py-2 pl-4 pr-2 font-mono text-sm text-foreground",
+        "relative flex w-full max-w-sm items-center justify-between rounded-lg border bg-muted/50 py-2 pl-4 pr-2 font-mono text-sm text-foreground transition-colors duration-fast ease-out hover:border-border-strong",
         className
       )}
       {...props}

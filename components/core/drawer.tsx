@@ -17,7 +17,7 @@ export const DrawerOverlay = React.forwardRef<
   <RadixDialog.Overlay
     ref={ref}
     className={cx(
-      "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm",
+      "fixed inset-0 z-50 bg-overlay ease-out",
       "data-[state=open]:animate-in data-[state=open]:fade-in-0",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       className
@@ -36,10 +36,10 @@ export const DrawerContent = React.forwardRef<
     <RadixDialog.Content
       ref={ref}
       className={cx(
-        "fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-2xl border-t border-border bg-card pb-safe shadow-xl outline-none",
+        "fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-xl border-t border-border bg-popover pb-safe shadow-float outline-none",
         "max-h-[85svh]",
-        "data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=open]:duration-300",
-        "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=closed]:duration-300",
+        "data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=open]:duration-200 data-[state=open]:ease-out",
+        "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=closed]:duration-200 data-[state=closed]:ease-out",
         className
       )}
       {...props}

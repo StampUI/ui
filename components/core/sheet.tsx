@@ -18,7 +18,7 @@ export const SheetOverlay = React.forwardRef<
   <RadixDialog.Overlay
     ref={ref}
     className={cx(
-      "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm",
+      "fixed inset-0 z-50 bg-overlay ease-out",
       "data-[state=open]:animate-in data-[state=open]:fade-in-0",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       className
@@ -30,9 +30,9 @@ SheetOverlay.displayName = "SheetOverlay"
 
 const sheetContentStyles = cva(
   [
-    "fixed z-50 bg-card border-border shadow-xl outline-none",
+    "fixed z-50 bg-popover border-border shadow-float outline-none",
     "data-[state=open]:animate-in data-[state=closed]:animate-out",
-    "data-[state=closed]:duration-300 data-[state=open]:duration-300",
+    "duration-200 ease-out",
   ],
   {
     variants: {
@@ -50,7 +50,7 @@ const sheetContentStyles = cva(
           "data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
         ],
         bottom: [
-          "inset-x-0 bottom-0 w-full rounded-t-2xl border-t",
+          "inset-x-0 bottom-0 w-full rounded-t-xl border-t",
           "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
         ],
       },
@@ -113,6 +113,6 @@ export const SheetDescription = React.forwardRef<
 SheetDescription.displayName = "SheetDescription"
 
 export const SheetBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cx("flex-1 overflow-y-auto px-6 py-4", className)} {...props} />
+  <div className={cx("flex-1 overflow-y-auto min-h-0 px-6 py-4", className)} {...props} />
 )
 SheetBody.displayName = "SheetBody"

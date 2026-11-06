@@ -23,6 +23,9 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      // Synced component sources use a few deliberate setState-in-effect
+      // syncs (prop to local state); report them without failing the run.
+      "react-hooks/set-state-in-effect": "warn",
 
       // Design-system rule (CONTRIBUTING.md): named exports only.
       "no-restricted-syntax": [

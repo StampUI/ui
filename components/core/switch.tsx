@@ -11,7 +11,7 @@ const switchStyles = cva(
     "transition-all duration-200 ease-out outline-none",
     "focus-visible:ring-1 focus-visible:ring-border-strong ",
     "disabled:cursor-not-allowed disabled:opacity-40",
-    "data-[state=unchecked]:bg-surface-3",
+    "data-[state=unchecked]:bg-border-strong",
   ],
   {
     variants: {
@@ -22,8 +22,8 @@ const switchStyles = cva(
       },
       color: {
         default: "data-[state=checked]:bg-foreground",
-        success: "data-[state=checked]:bg-green-600",
-        danger:  "data-[state=checked]:bg-red-600",
+        success: "data-[state=checked]:bg-success",
+        danger:  "data-[state=checked]:bg-danger",
       },
     },
     defaultVariants: {

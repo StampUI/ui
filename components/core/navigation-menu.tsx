@@ -47,7 +47,7 @@ export function NavigationMenuLink({ className, active, children, ...props }: Na
     <a
       data-active={active || undefined}
       className={cx(
-        "inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+        "inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md transition-colors",
         active ? "text-foreground bg-surface-2" : "text-muted-foreground hover:text-foreground hover:bg-surface-2",
         className
       )}
@@ -90,7 +90,7 @@ export function NavigationMenuItem({ id, trigger, children, className }: Navigat
       {isOpen && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="absolute start-0 top-full mt-1.5 z-50 min-w-48 rounded-xl border border-border bg-background p-2 shadow-lg"
+          className="popup-surface absolute left-0 top-full mt-1.5 z-50 min-w-48 p-2"
         >
           {children}
         </div>

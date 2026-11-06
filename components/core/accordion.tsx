@@ -14,7 +14,7 @@ export const AccordionItem = React.forwardRef<
   <RadixAccordion.Item
     ref={ref}
     className={cx(
-      "overflow-hidden rounded-xl border border-border/50 bg-card mb-3 last:mb-0 transition-colors data-[state=open]:border-primary/30",
+      "overflow-hidden rounded-xl border border-border bg-card mb-3 last:mb-0 transition-colors",
       className
     )}
     {...props}
@@ -30,14 +30,14 @@ export const AccordionTrigger = React.forwardRef<
     <RadixAccordion.Trigger
       ref={ref}
       className={cx(
-        "flex flex-1 items-center justify-between px-5 py-4 text-left font-medium text-foreground outline-none transition-all hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:ring-1 focus-visible:ring-border-strong",
+        "flex flex-1 items-center justify-between px-5 py-4 text-left text-sm font-medium text-foreground outline-none transition-all hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:ring-1 focus-visible:ring-border-strong",
         "[&[data-state=open]>svg]:rotate-180",
         className
       )}
       {...props}
     >
       {children}
-      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-in-out" />
+      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-slow ease-out" />
     </RadixAccordion.Trigger>
   </RadixAccordion.Header>
 ))

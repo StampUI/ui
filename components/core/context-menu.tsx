@@ -20,8 +20,7 @@ export const ContextMenuContent = React.forwardRef<
     <RadixContextMenu.Content
       ref={ref}
       className={cx(
-        "z-50 min-w-[180px] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
-        "animate-in fade-in-0 zoom-in-95",
+        "popup-surface z-50 min-w-[180px] overflow-hidden p-1.5",
         className
       )}
       {...props}
@@ -129,8 +128,7 @@ export const ContextMenuSubContent = React.forwardRef<
   <RadixContextMenu.SubContent
     ref={ref}
     className={cx(
-      "z-50 min-w-[160px] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
-      "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+      "popup-surface z-50 min-w-[160px] overflow-hidden p-1.5",
       className
     )}
     {...props}

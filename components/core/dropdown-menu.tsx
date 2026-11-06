@@ -21,11 +21,7 @@ export const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cx(
-        "z-50 min-w-[180px] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
-        "animate-in fade-in-0 zoom-in-95",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-        "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2",
-        "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "popup-surface z-50 min-w-[180px] overflow-hidden p-1.5",
         className
       )}
       {...props}
@@ -137,8 +133,7 @@ export const DropdownMenuSubContent = React.forwardRef<
   <RadixDropdown.SubContent
     ref={ref}
     className={cx(
-      "z-50 min-w-[160px] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg",
-      "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+      "popup-surface z-50 min-w-[160px] overflow-hidden p-1.5",
       className
     )}
     {...props}

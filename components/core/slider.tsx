@@ -48,14 +48,13 @@ const thumbStyles = cva(
     "transition-all duration-100",
     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-border-strong ",
     "disabled:pointer-events-none disabled:opacity-50",
-    "hover:scale-110",
   ],
   {
     variants: {
       size: {
-        sm: "h-3.5 w-3.5",
-        md: "h-4 w-4",
-        lg: "h-5 w-5",
+        sm: "h-2.5 w-2.5",
+        md: "h-3 w-3",
+        lg: "h-4 w-4",
       },
     },
     defaultVariants: { size: "md" },

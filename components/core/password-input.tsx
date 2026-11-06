@@ -16,10 +16,10 @@ function getStrength(password: string): 0 | 1 | 2 | 3 | 4 {
 
 const strengthConfig = [
   { label: "", color: "bg-border" },
-  { label: "Weak", color: "bg-red-500" },
-  { label: "Fair", color: "bg-orange-400" },
-  { label: "Good", color: "bg-yellow-400" },
-  { label: "Strong", color: "bg-green-500" },
+  { label: "Weak", color: "bg-danger" },
+  { label: "Fair", color: "bg-warning" },
+  { label: "Good", color: "bg-success/60" },
+  { label: "Strong", color: "bg-success" },
 ]
 
 export interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -48,9 +48,10 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
             type={visible ? "text" : "password"}
             value={controlled ? value : internalValue}
             onChange={handleChange}
-            autoComplete={props.autoComplete || "new-password"}
+            autoComplete={props.autoComplete || "off"}
             data-1p-ignore="true"
             data-lpignore="true"
+            data-form-type="other"
             className={cx(
               "flex w-full rounded-lg border border-border bg-input px-3 py-2 pr-10 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-border-strong disabled:cursor-not-allowed disabled:opacity-50",
               className
@@ -75,13 +76,13 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
                 <div
                   key={level}
                   className={cx(
-                    "h-1 flex-1 rounded-full transition-colors duration-300",
+                    "h-1 flex-1 rounded-full transition-colors duration-base ease-out",
                     strength >= level ? strengthConfig[strength].color : "bg-border"
                   )}
                 />
               ))}
             </div>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {strengthConfig[strength].label}
             </p>
           </div>

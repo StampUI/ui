@@ -16,7 +16,7 @@ const spinnerStyles = cva(
       variant: {
         default: "text-muted-foreground",
         primary: "text-foreground",
-        white:   "text-white",
+        white:   "text-primary-foreground",
       },
     },
     defaultVariants: { size: "md", variant: "default" },

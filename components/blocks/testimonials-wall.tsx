@@ -54,7 +54,7 @@ function Initials({ name }: { name: string }) {
       ? `${parts[0][0]}${parts[parts.length - 1][0]}`
       : parts[0].slice(0, 2)
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#101114] border border-[#23252A] text-xs font-semibold text-[#FAFAFA] select-none">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2 border border-border text-xs font-semibold text-foreground select-none">
       {initials.toUpperCase()}
     </span>
   )
@@ -69,7 +69,7 @@ export function TestimonialsWall({
     <section className={cx("w-full py-24 px-6", className)}>
       <div className="mx-auto max-w-5xl">
         {title && (
-          <h2 className="mb-12 text-center text-2xl font-semibold tracking-tight text-[#FAFAFA]">
+          <h2 className="mb-12 text-center text-2xl font-semibold tracking-tight text-foreground">
             {title}
           </h2>
         )}
@@ -77,7 +77,7 @@ export function TestimonialsWall({
           {items.map((item, i) => (
             <div
               key={i}
-              className="flex flex-col justify-between gap-5 rounded-xl border border-[#23252A] bg-[#09090B] p-5"
+              className="flex flex-col justify-between gap-5 rounded-xl border border-border bg-card p-5"
             >
               <p className="text-sm leading-relaxed text-muted-foreground">
                 &ldquo;{item.quote}&rdquo;
@@ -87,13 +87,13 @@ export function TestimonialsWall({
                   <img
                     src={item.author.avatarUrl}
                     alt={item.author.name}
-                    className="h-8 w-8 shrink-0 rounded-full border border-[#23252A] object-cover"
+                    className="h-8 w-8 shrink-0 rounded-full border border-border object-cover"
                   />
                 ) : (
                   <Initials name={item.author.name} />
                 )}
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-[#FAFAFA]">
+                  <p className="truncate text-sm font-medium text-foreground">
                     {item.author.name}
                   </p>
                   <p className="truncate text-xs text-muted-foreground">

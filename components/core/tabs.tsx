@@ -28,7 +28,7 @@ export const TabsTrigger = React.forwardRef<
   <RadixTabs.Trigger
     ref={ref}
     className={cx(
-      "relative flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-all outline-none border border-transparent",
+      "relative flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-fast ease-out outline-none border border-transparent",
       "text-muted-foreground hover:bg-surface-2 hover:text-foreground",
       "data-[state=active]:bg-surface-raised data-[state=active]:text-foreground data-[state=active]:border-border-strong data-[state=active]:font-medium",
       "disabled:pointer-events-none disabled:opacity-50",
@@ -46,7 +46,7 @@ export const TabsContent = React.forwardRef<
   <RadixTabs.Content
     ref={ref}
     className={cx(
-      "mt-4 outline-none focus-visible:ring-1 focus-visible:ring-border-strong ",
+      "mt-4 outline-none focus-visible:ring-1 focus-visible:ring-border-strong data-[state=active]:animate-fade-in",
       className
     )}
     {...props}

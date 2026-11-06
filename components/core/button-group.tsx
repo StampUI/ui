@@ -15,7 +15,7 @@ export function ButtonGroup({
       role="group"
       data-orientation={orientation}
       className={cx(
-        "inline-flex",
+        "inline-flex [&>*]:transition-colors [&>*]:duration-fast [&>*]:ease-out",
         orientation === "horizontal"
           ? [
               "flex-row",

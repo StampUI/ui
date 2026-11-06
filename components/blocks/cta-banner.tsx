@@ -28,12 +28,12 @@ export function CtaBanner({
   return (
     <section
       className={cx(
-        "w-full border-t border-[#23252A] py-20 px-6",
+        "w-full border-t border-border py-20 px-6",
         "flex flex-col items-center text-center",
         className
       )}
     >
-      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#FAFAFA] max-w-xl leading-tight">
+      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground max-w-xl leading-tight">
         {headline}
       </h2>
 

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { ScrollArea } from "@/components/core/scroll-area"
 
 export interface ComparisonPlan {
   name: string
@@ -38,12 +39,12 @@ const defaultFeatures: ComparisonFeature[] = [
 function CellValue({ value }: { value: boolean | string }) {
   if (typeof value === "boolean") {
     return value ? (
-      <span className="text-[#FAFAFA] text-sm font-medium">✓</span>
+      <span className="text-foreground text-sm font-medium">✓</span>
     ) : (
-      <span className="text-muted-foreground text-sm opacity-40">—</span>
+      <span className="text-muted-foreground text-sm opacity-40">-</span>
     )
   }
-  return <span className="text-sm text-[#FAFAFA]">{value}</span>
+  return <span className="text-sm text-foreground">{value}</span>
 }
 
 export function FeatureComparison({
@@ -52,7 +53,7 @@ export function FeatureComparison({
   className,
 }: FeatureComparisonProps) {
   return (
-    <div className={cx("w-full overflow-x-auto", className)}>
+    <ScrollArea orientation="horizontal" className={cx("w-full", className)}>
       <table className="w-full min-w-[480px] border-collapse">
         <thead>
           <tr>
@@ -63,8 +64,8 @@ export function FeatureComparison({
               <th
                 key={i}
                 className={cx(
-                  "pb-4 px-4 text-center text-sm font-semibold text-[#FAFAFA]",
-                  plan.highlighted && "rounded-t-xl bg-[#101114]"
+                  "pb-4 px-4 text-center text-sm font-semibold text-foreground",
+                  plan.highlighted && "rounded-t-xl bg-surface-2"
                 )}
               >
                 {plan.name}
@@ -78,7 +79,7 @@ export function FeatureComparison({
             return (
               <tr
                 key={fi}
-                className="border-t border-[#23252A] transition-colors duration-150 ease-out hover:bg-[#09090B]"
+                className="border-t border-border transition-colors duration-150 ease-out hover:bg-card"
               >
                 <td
                   className={cx(
@@ -93,7 +94,7 @@ export function FeatureComparison({
                     key={pi}
                     className={cx(
                       "px-4 py-3 text-center",
-                      plan.highlighted && "bg-[#101114]",
+                      plan.highlighted && "bg-surface-2",
                       isLast && plan.highlighted && "rounded-b-xl pb-4"
                     )}
                   >
@@ -105,6 +106,6 @@ export function FeatureComparison({
           })}
         </tbody>
       </table>
-    </div>
+    </ScrollArea>
   )
 }

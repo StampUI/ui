@@ -7,15 +7,20 @@ const cardStyles = cva(
   {
     variants: {
       variant: {
-        surface: "bg-card border border-border",
+        surface: "bg-card border border-border-soft",
         elevated: "bg-surface-2 border border-border-strong",
         command: "bg-surface-3 border border-border-strong",
         preview: "bg-surface-2 border border-dashed border-border-soft",
         muted: "bg-muted border border-transparent",
       },
+      interactive: {
+        true: "cursor-pointer transition-colors duration-fast ease-out hover:border-border-strong hover:bg-surface-2",
+        false: "",
+      },
     },
     defaultVariants: {
       variant: "surface",
+      interactive: false,
     },
   }
 )
@@ -25,8 +30,8 @@ export interface CardProps
     VariantProps<typeof cardStyles> {}
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div ref={ref} className={cx(cardStyles({ variant }), className)} {...props} />
+  ({ className, variant, interactive, ...props }, ref) => (
+    <div ref={ref} className={cx(cardStyles({ variant, interactive }), className)} {...props} />
   )
 )
 Card.displayName = "Card"

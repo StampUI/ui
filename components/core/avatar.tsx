@@ -10,7 +10,7 @@ const avatarStyles = cva(
   {
     variants: {
       size: {
-        xs: "h-6 w-6 text-[10px]",
+        xs: "h-6 w-6 text-xs",
         sm: "h-8 w-8 text-xs",
         md: "h-10 w-10 text-sm",
         lg: "h-12 w-12 text-base",
@@ -47,7 +47,7 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cx("aspect-square h-full w-full object-cover", className)}
+    className={cx("aspect-square h-full w-full object-cover animate-fade-in", className)}
     {...props}
   />
 ))
@@ -60,7 +60,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cx(
-      "flex h-full w-full items-center justify-center rounded-full",
+      "flex h-full w-full items-center justify-center",
       "bg-surface-3 text-muted-foreground font-medium",
       className,
     )}
@@ -69,12 +69,29 @@ const AvatarFallback = React.forwardRef<
 ))
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
+const groupOverflowStyles = cva(
+  "relative flex shrink-0 items-center justify-center rounded-full bg-surface-3 border-background font-medium text-muted-foreground",
+  {
+    variants: {
+      size: {
+        xs: "h-6 w-6 text-xs border-2",
+        sm: "h-8 w-8 text-xs border-2",
+        md: "h-10 w-10 text-xs border-2",
+        lg: "h-12 w-12 text-sm border-[2.5px]",
+        xl: "h-16 w-16 text-base border-[3px]",
+      },
+    },
+    defaultVariants: { size: "md" },
+  }
+)
+
 interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   max?: number
+  size?: "xs" | "sm" | "md" | "lg" | "xl"
   children: React.ReactNode
 }
 
-function AvatarGroup({ children, max, className, ...props }: AvatarGroupProps) {
+function AvatarGroup({ children, max, size = "md", className, ...props }: AvatarGroupProps) {
   const childArray = React.Children.toArray(children)
   const shown = max ? childArray.slice(0, max) : childArray
   const overflow = max ? childArray.length - max : 0
@@ -83,7 +100,7 @@ function AvatarGroup({ children, max, className, ...props }: AvatarGroupProps) {
     <div className={cx("flex -space-x-2", className)} {...props}>
       {shown}
       {overflow > 0 && (
-        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-3 border-2 border-background text-xs font-medium text-muted-foreground">
+        <div className={groupOverflowStyles({ size })}>
           +{overflow}
         </div>
       )}

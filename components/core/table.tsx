@@ -11,7 +11,7 @@ export function Table({
   ...props
 }: TableProps) {
   return (
-    <div className={cx("w-full overflow-x-auto rounded-xl border border-border", containerClassName)}>
+    <div className={cx("w-full overflow-x-auto rounded-xl border border-border-soft", containerClassName)}>
       <table
         className={cx("w-full text-sm", className)}
         {...props}
@@ -36,7 +36,7 @@ export function TableBody({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"tbody">) {
-  return <tbody className={cx("divide-y divide-border", className)} {...props} />
+  return <tbody className={cx("divide-y divide-border bg-card", className)} {...props} />
 }
 
 export function TableFooter({
@@ -100,7 +100,7 @@ export function TableCaption({
   return (
     <caption
       className={cx(
-        "mt-3 text-xs text-muted-foreground text-center",
+        "caption-bottom mt-3 pb-1 text-xs text-muted-foreground text-center",
         className
       )}
       {...props}

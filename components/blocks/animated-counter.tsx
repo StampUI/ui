@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
-import { usePrefersReducedMotion } from "@/lib/use-reduced-motion"
 
 interface AnimatedCounterProps {
   from?: number
@@ -28,15 +27,8 @@ export function AnimatedCounter({
   const [value, setValue] = React.useState(from)
   const startTimeRef = React.useRef<number | null>(null)
   const rafRef = React.useRef<number | null>(null)
-  const reducedMotion = usePrefersReducedMotion()
 
   React.useEffect(() => {
-    if (reducedMotion) {
-      setValue(to)
-      onComplete?.()
-      return
-    }
-
     startTimeRef.current = null
     const startValue = from
 
@@ -63,7 +55,7 @@ export function AnimatedCounter({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
     }
-  }, [from, to, duration, decimals, onComplete, reducedMotion])
+  }, [from, to, duration, decimals, onComplete])
 
   const formatted = value.toLocaleString("en-US", {
     minimumFractionDigits: decimals,

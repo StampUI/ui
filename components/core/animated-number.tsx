@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
-import { usePrefersReducedMotion } from "@/lib/use-reduced-motion"
 
 type Format = "default" | "compact" | "currency" | "percent"
 
@@ -33,9 +32,21 @@ function formatValue(n: number, format: Format, currency: string, decimals: numb
   return prefix + out + suffix
 }
 
+const MAX_TWEEN_MS = 800
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
+}
+
+/**
+ * Renders the real value on the server and on first client render (no zero flash,
+ * no hydration mismatch). When `value` changes later, it tweens from the previously
+ * displayed number to the new one (ease-out, capped at 800ms). With
+ * prefers-reduced-motion it updates instantly.
+ */
 export function AnimatedNumber({
   value,
-  duration = 1400,
+  duration = 600,
   format = "default",
   currency = "USD",
   decimals = 0,
@@ -43,40 +54,32 @@ export function AnimatedNumber({
   suffix = "",
   className,
 }: AnimatedNumberProps) {
-  const [current, setCurrent] = React.useState(0)
-  const ref = React.useRef<HTMLSpanElement>(null)
-  const triggered = React.useRef(false)
-  const reducedMotion = usePrefersReducedMotion()
+  const [current, setCurrent] = React.useState(value)
+  const shownRef = React.useRef(value)
 
   React.useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !triggered.current) {
-          triggered.current = true
-          if (reducedMotion) {
-            setCurrent(value)
-            return
-          }
-          const startTime = performance.now()
-          const tick = (now: number) => {
-            const t = Math.min((now - startTime) / duration, 1)
-            const eased = 1 - Math.pow(1 - t, 4)
-            setCurrent(eased * value)
-            if (t < 1) requestAnimationFrame(tick)
-          }
-          requestAnimationFrame(tick)
-        }
-      },
-      { threshold: 0.4 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [value, duration, reducedMotion])
+    const from = shownRef.current
+    if (from === value) return
+
+    // Reduced motion or a zero duration jumps straight to the value on the next frame.
+    const ms = prefersReducedMotion() ? 0 : Math.min(Math.max(duration, 0), MAX_TWEEN_MS)
+
+    let frame = 0
+    const startTime = performance.now()
+    const tick = (now: number) => {
+      const t = ms === 0 ? 1 : Math.min((now - startTime) / ms, 1)
+      const eased = 1 - Math.pow(1 - t, 3)
+      const next = t < 1 ? from + (value - from) * eased : value
+      shownRef.current = next
+      setCurrent(next)
+      if (t < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [value, duration])
 
   return (
-    <span ref={ref} className={cx("tabular-nums", className)}>
+    <span className={cx("tabular-nums", className)}>
       {formatValue(current, format, currency, decimals, prefix, suffix)}
     </span>
   )

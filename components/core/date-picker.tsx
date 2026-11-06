@@ -57,7 +57,7 @@ export function DatePicker({
         <RadixPopover.Content
           align="start"
           sideOffset={4}
-          className="z-50 w-72 rounded-xl border border-border bg-card shadow-lg outline-none animate-in fade-in-0 zoom-in-95"
+          className="popup-surface z-50 w-72 outline-none"
         >
           <Calendar
             selected={selected}

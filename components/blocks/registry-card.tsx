@@ -28,7 +28,7 @@ export function RegistryCard({
   className,
   ...props
 }: RegistryCardProps) {
-  const { title, slug, description, category, status, previewPath, promptReady, version, licenseRequired } = block
+  const { title, slug, description, category, status, previewPath, difficulty, frameworks, dependencies, promptReady, version, licenseRequired } = block
   const isGated = licenseRequired || status === "pro" || status === "locked"
 
   return (
@@ -52,17 +52,17 @@ export function RegistryCard({
 
         <div className="absolute top-3 right-3 flex gap-1.5">
           {isGated && (
-            <Badge variant="pro" className="bg-[#09090B] text-[10px] tracking-widest font-mono">
+            <Badge variant="pro" className="bg-card text-[10px] tracking-widest font-mono">
               PRO
             </Badge>
           )}
           {status === "new" && !isGated && (
-            <Badge variant="new" className="bg-[#09090B] text-[10px] tracking-widest font-mono">
+            <Badge variant="new" className="bg-card text-[10px] tracking-widest font-mono">
               NEW
             </Badge>
           )}
           {promptReady && (
-            <Badge variant="neutral" className="bg-[#09090B] text-[10px] font-mono hidden group-hover:inline-flex">
+            <Badge variant="neutral" className="bg-card text-[10px] font-mono hidden group-hover:inline-flex">
               Prompt Ready
             </Badge>
           )}

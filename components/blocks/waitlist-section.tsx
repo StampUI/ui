@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Button } from "@/components/core/button"
+import { RevealIf, RevealText } from "@/components/effects/motion-gate"
 import { cx } from "@/lib/cx"
 
 export interface WaitlistSectionProps {
@@ -10,6 +11,8 @@ export interface WaitlistSectionProps {
   placeholder?: string
   buttonLabel?: string
   count?: number
+  /** Opt-in motion layer: headline text reveal and a fade-in for the form. Off renders the same markup still. */
+  animate?: boolean
   className?: string
 }
 
@@ -18,7 +21,8 @@ export function WaitlistSection({
   subtext = "We're rolling out access gradually. Drop your email to reserve your spot.",
   placeholder = "you@company.com",
   buttonLabel = "Join Waitlist",
-  count = 2847,
+  count,
+  animate = true,
   className,
 }: WaitlistSectionProps) {
   const [email, setEmail] = React.useState("")
@@ -36,7 +40,9 @@ export function WaitlistSection({
     setSubmitted(true)
   }
 
-  const formattedCount = count.toLocaleString()
+  // Social proof is opt-in: without a real number from the caller the line is
+  // omitted entirely rather than shipping an invented one.
+  const formattedCount = typeof count === "number" ? count.toLocaleString() : null
 
   return (
     <section
@@ -45,9 +51,13 @@ export function WaitlistSection({
         className
       )}
     >
-      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#FAFAFA] max-w-xl leading-tight">
+      <RevealText
+        animate={animate}
+        as="h2"
+        className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground max-w-xl leading-tight"
+      >
         {headline}
-      </h2>
+      </RevealText>
 
       {subtext && (
         <p className="mt-4 text-base text-muted-foreground max-w-md leading-relaxed">
@@ -55,48 +65,52 @@ export function WaitlistSection({
         </p>
       )}
 
-      <div className="mt-3 flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAFA]/40" />
-        <span className="text-xs text-muted-foreground font-medium">
-          {formattedCount} developers waiting
-        </span>
-      </div>
-
-      {submitted ? (
-        <div className="mt-8 px-6 py-4 rounded-xl border border-[#23252A] bg-[#09090B] text-sm text-[#FAFAFA] font-medium">
-          You&apos;re on the list. We&apos;ll reach out soon.
+      {formattedCount && (
+        <div className="mt-3 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-foreground/40" />
+          <span className="text-xs text-muted-foreground font-medium">
+            {formattedCount} developers waiting
+          </span>
         </div>
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-8 w-full max-w-md flex flex-col sm:flex-row gap-2"
-          noValidate
-        >
-          <div className="flex-1 flex flex-col">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-                if (error) setError("")
-              }}
-              placeholder={placeholder}
-              className={cx(
-                "h-10 w-full rounded-xl border bg-[#101114] px-4 text-sm text-[#FAFAFA] placeholder:text-muted-foreground outline-none",
-                "transition-colors duration-[170ms] ease-out",
-                "focus:border-[#FAFAFA]/20",
-                error ? "border-red-500/60" : "border-[#23252A]"
-              )}
-            />
-            {error && (
-              <span className="mt-1.5 text-xs text-red-400 text-left">{error}</span>
-            )}
-          </div>
-          <Button type="submit" className="h-10 shrink-0">
-            {buttonLabel}
-          </Button>
-        </form>
       )}
+
+      <RevealIf animate={animate} delay={120} className="flex w-full flex-col items-center">
+        {submitted ? (
+          <div className="mt-8 px-6 py-4 rounded-xl border border-border bg-card text-sm text-foreground font-medium">
+            You&apos;re on the list. We&apos;ll reach out soon.
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 w-full max-w-md flex flex-col sm:flex-row gap-2"
+            noValidate
+          >
+            <div className="flex-1 flex flex-col">
+              <input
+                type="email" autoComplete="off"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  if (error) setError("")
+                }}
+                placeholder={placeholder}
+                className={cx(
+                  "h-10 w-full rounded-xl border bg-surface-2 px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none",
+                  "transition-colors duration-[170ms] ease-out",
+                  "focus:border-foreground/20",
+                  error ? "border-danger/60" : "border-border"
+                )}
+              />
+              {error && (
+                <span className="mt-1.5 text-xs text-danger text-left">{error}</span>
+              )}
+            </div>
+            <Button type="submit" className="h-10 shrink-0">
+              {buttonLabel}
+            </Button>
+          </form>
+        )}
+      </RevealIf>
     </section>
   )
 }

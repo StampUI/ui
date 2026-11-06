@@ -14,13 +14,15 @@ export interface ChangelogEntry {
 
 export interface ChangelogFeedProps {
   entries?: ChangelogEntry[]
+  /** Section heading; pass null when the page already has its own title. */
+  title?: string | null
   className?: string
 }
 
 const TYPE_STYLES: Record<ChangelogEntry["type"], string> = {
-  feature: "bg-[#101114] text-[#FAFAFA] border-[#23252A]",
-  fix: "bg-[#101114] text-muted-foreground border-[#23252A]",
-  breaking: "bg-[#101114] text-muted-foreground border-[#23252A] font-semibold",
+  feature: "bg-surface-2 text-foreground border-border",
+  fix: "bg-surface-2 text-muted-foreground border-border",
+  breaking: "bg-surface-2 text-muted-foreground border-border font-semibold",
 }
 
 const TYPE_LABELS: Record<ChangelogEntry["type"], string> = {
@@ -58,22 +60,25 @@ const DEFAULT_ENTRIES: ChangelogEntry[] = [
 
 export function ChangelogFeed({
   entries = DEFAULT_ENTRIES,
+  title = "Changelog",
   className,
 }: ChangelogFeedProps) {
   return (
     <section className={cx("w-full py-16 px-6", className)}>
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold tracking-tight text-[#FAFAFA] mb-10">
-          Changelog
-        </h2>
+        {title && (
+          <h2 className="text-2xl font-bold tracking-tight text-foreground mb-10">
+            {title}
+          </h2>
+        )}
 
-        <div className="relative border-l border-[#23252A] pl-8 flex flex-col gap-10">
+        <div className="relative border-l border-border pl-8 flex flex-col gap-10">
           {entries.map((entry, i) => (
             <div key={i} className="relative">
-              <span className="absolute -left-[calc(2rem+5px)] top-1.5 w-2.5 h-2.5 rounded-full bg-[#23252A] border border-[#23252A] ring-4 ring-[#070708]" />
+              <span className="absolute -left-[calc(2rem+5px)] top-1.5 w-2.5 h-2.5 rounded-full bg-border border border-border ring-4 ring-background" />
 
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="text-xs font-mono font-medium text-[#FAFAFA] bg-[#101114] border border-[#23252A] px-2 py-0.5 rounded-md">
+                <span className="text-xs font-mono font-medium text-foreground bg-surface-2 border border-border px-2 py-0.5 rounded-md">
                   {entry.version}
                 </span>
                 <span
@@ -87,7 +92,7 @@ export function ChangelogFeed({
                 <span className="text-xs text-muted-foreground">{entry.date}</span>
               </div>
 
-              <h3 className="text-base font-semibold text-[#FAFAFA] leading-snug">
+              <h3 className="text-base font-semibold text-foreground leading-snug">
                 {entry.title}
               </h3>
               <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
@@ -99,7 +104,7 @@ export function ChangelogFeed({
                   {entry.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs font-mono text-muted-foreground bg-[#09090B] border border-[#23252A] px-2 py-0.5 rounded-md"
+                      className="text-xs font-mono text-muted-foreground bg-card border border-border px-2 py-0.5 rounded-md"
                     >
                       {tag}
                     </span>

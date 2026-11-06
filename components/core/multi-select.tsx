@@ -57,18 +57,26 @@ export function MultiSelect({
   return (
     <RadixPopover.Root open={open} onOpenChange={setOpen}>
       <RadixPopover.Trigger asChild>
-        <button
-          type="button"
-          disabled={disabled}
+        {/* div instead of button, avoids <button> nested inside <button> (the badge remove Xs) */}
+        <div
+          role="combobox"
+          tabIndex={disabled ? -1 : 0}
           aria-expanded={open}
           aria-haspopup="listbox"
           aria-controls={listId}
+          aria-disabled={disabled}
           aria-label={selectedLabels.length ? selectedLabels.join(", ") : placeholder}
+          onKeyDown={(e) => {
+            if ((e.key === "Enter" || e.key === " ") && !disabled) {
+              e.preventDefault()
+              setOpen((prev) => !prev)
+            }
+          }}
           className={cx(
             "flex min-h-9 w-full items-center justify-between gap-2 rounded-lg border border-border bg-surface-2 px-3 py-1.5 text-sm outline-none",
-            "hover:border-border-strong transition-colors text-left",
-            "focus-visible:ring-1 focus-visible:ring-border-strong ",
-            "disabled:cursor-not-allowed disabled:opacity-50",
+            "hover:border-border-strong transition-colors text-left cursor-pointer select-none",
+            "focus-visible:ring-1 focus-visible:ring-border-strong",
+            disabled && "cursor-not-allowed opacity-50 pointer-events-none",
             className
           )}
         >
@@ -102,7 +110,7 @@ export function MultiSelect({
             )}
           </div>
           <ChevronDown className={cx("h-4 w-4 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
-        </button>
+        </div>
       </RadixPopover.Trigger>
 
       <RadixPopover.Portal>
@@ -112,7 +120,7 @@ export function MultiSelect({
           aria-multiselectable="true"
           align="start"
           sideOffset={4}
-          className="z-50 w-[var(--radix-popover-trigger-width)] max-h-60 overflow-auto rounded-xl border border-border bg-card p-1.5 shadow-lg outline-none animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95"
+          className="popup-surface z-50 w-[var(--radix-popover-trigger-width)] max-h-60 overflow-auto p-1.5 outline-none"
         >
           {options.map((option) => {
             const selected = value.includes(option.value)

@@ -27,14 +27,14 @@ export function CookieConsent({
       aria-label="Cookie consent"
       className={cx(
         "fixed bottom-0 left-0 right-0 z-50",
-        "border-t border-[#23252A] bg-[#09090B]",
+        "border-t border-border bg-card",
         className
       )}
     >
       <div className="mx-auto max-w-5xl px-6 py-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-[#FAFAFA] mb-0.5">{title}</p>
+            <p className="text-sm font-medium text-foreground mb-0.5">{title}</p>
             <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
           </div>
 

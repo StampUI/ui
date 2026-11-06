@@ -23,15 +23,15 @@ const variantStyles: Record<
   { bar: string; label: string }
 > = {
   info: {
-    bar: "bg-[#09090B] border-b border-[#23252A]",
+    bar: "bg-card border-b border-border",
     label: "text-muted-foreground",
   },
   warning: {
-    bar: "bg-[#09090B] border-b border-[#23252A]",
-    label: "text-[#FAFAFA] font-medium",
+    bar: "bg-card border-b border-border",
+    label: "text-foreground font-medium",
   },
   success: {
-    bar: "bg-[#09090B] border-b border-[#23252A]",
+    bar: "bg-card border-b border-border",
     label: "text-muted-foreground",
   },
 }
@@ -65,13 +65,13 @@ export function AnnouncementBar({
 
         {cta && (
           <>
-            <span className="shrink-0 text-[#23252A]" aria-hidden>
+            <span className="shrink-0 text-muted-foreground-soft" aria-hidden>
               ·
             </span>
             {cta.href ? (
               <a
                 href={cta.href}
-                className="shrink-0 text-xs font-semibold text-[#FAFAFA] underline-offset-2 hover:underline transition-colors duration-150 ease-out"
+                className="shrink-0 text-xs font-semibold text-foreground underline-offset-2 hover:underline transition-colors duration-150 ease-out"
               >
                 {cta.label}
               </a>
@@ -79,7 +79,7 @@ export function AnnouncementBar({
               <button
                 type="button"
                 onClick={cta.onClick}
-                className="shrink-0 text-xs font-semibold text-[#FAFAFA] underline-offset-2 hover:underline transition-colors duration-150 ease-out"
+                className="shrink-0 text-xs font-semibold text-foreground underline-offset-2 hover:underline transition-colors duration-150 ease-out"
               >
                 {cta.label}
               </button>
@@ -93,7 +93,7 @@ export function AnnouncementBar({
           type="button"
           aria-label="Dismiss announcement"
           onClick={() => setDismissed(true)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 ease-out hover:bg-[#101114] hover:text-[#FAFAFA]"
+          className="absolute right-3 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-150 ease-out hover:bg-surface-2 hover:text-foreground"
         >
           <X size={13} strokeWidth={2} />
         </button>

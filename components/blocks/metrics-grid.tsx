@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp, TrendingDown, Minus, type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react"
 import { cx } from "@/lib/cx"
 
 export interface MetricChange {
@@ -25,28 +25,24 @@ export interface MetricsGridProps {
 
 const defaultMetrics: MetricItem[] = [
   {
-    label: "Monthly Revenue",
+    label: "Monthly revenue",
     value: "$48,290",
     change: { value: "+12.4%", direction: "up" },
-    description: "vs. last month",
   },
   {
-    label: "Active Users",
+    label: "Active users",
     value: "9,841",
     change: { value: "+3.1%", direction: "up" },
-    description: "vs. last month",
   },
   {
-    label: "Churn Rate",
+    label: "Churn rate",
     value: "2.3%",
     change: { value: "+0.4%", direction: "down" },
-    description: "vs. last month",
   },
   {
-    label: "Avg. Session",
+    label: "Avg. session",
     value: "4m 12s",
     change: { value: "0%", direction: "neutral" },
-    description: "vs. last month",
   },
 ]
 
@@ -57,15 +53,10 @@ const colClass: Record<2 | 3 | 4, string> = {
 }
 
 const changeStyles: Record<MetricChange["direction"], string> = {
-  up: "text-emerald-400",
-  down: "text-red-400",
+  /* Positive movement stays neutral; only a move in the wrong direction gets color. */
+  up: "text-foreground-soft",
+  down: "text-danger",
   neutral: "text-muted-foreground",
-}
-
-const ChangeIcon: Record<MetricChange["direction"], LucideIcon> = {
-  up: TrendingUp,
-  down: TrendingDown,
-  neutral: Minus,
 }
 
 export function MetricsGrid({
@@ -75,16 +66,16 @@ export function MetricsGrid({
 }: MetricsGridProps) {
   return (
     <div className={cx("w-full", className)}>
-      <div className={cx("grid grid-cols-1 gap-4", colClass[columns])}>
+      {/* One surface, divided internally */}
+      <div className={cx("grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border-soft bg-border-soft", colClass[columns])}>
         {metrics.map((metric, i) => {
           const Icon = metric.icon
           const change = metric.change
-          const ChangeIconComp = change ? ChangeIcon[change.direction] : null
 
           return (
             <div
               key={i}
-              className="flex flex-col gap-3 rounded-xl border border-[#23252A] bg-[#09090B] p-5 transition-colors duration-150 ease-out hover:border-[#2e3035] hover:bg-[#0c0c0f]"
+              className="flex flex-col gap-2 bg-card px-5 py-4"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-muted-foreground">
@@ -99,35 +90,25 @@ export function MetricsGrid({
                 )}
               </div>
 
-              <p className="text-2xl font-semibold tracking-tight text-[#FAFAFA]">
-                {metric.value}
-              </p>
-
-              {(change || metric.description) && (
-                <div className="flex items-center gap-1.5">
-                  {change && ChangeIconComp && (
-                    <ChangeIconComp
-                      size={13}
-                      className={changeStyles[change.direction]}
-                      strokeWidth={2}
-                    />
-                  )}
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <p className="text-xl font-medium leading-none tracking-tight tabular-nums text-foreground">
+                  {metric.value}
+                </p>
                   {change && (
                     <span
                       className={cx(
-                        "text-xs font-medium",
+                        "text-xs font-medium tabular-nums",
                         changeStyles[change.direction]
                       )}
                     >
                       {change.value}
                     </span>
                   )}
-                  {metric.description && (
-                    <span className="text-xs text-muted-foreground">
-                      {metric.description}
-                    </span>
-                  )}
-                </div>
+              </div>
+              {metric.description && (
+                <span className="text-xs text-muted-foreground-soft">
+                  {metric.description}
+                </span>
               )}
             </div>
           )

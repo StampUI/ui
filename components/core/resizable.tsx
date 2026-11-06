@@ -9,6 +9,7 @@ interface PanelGroupContextValue {
   direction: "horizontal" | "vertical"
   sizes: number[]
   setSizes: React.Dispatch<React.SetStateAction<number[]>>
+  minSizes: number[]
 }
 
 const PanelGroupContext = React.createContext<PanelGroupContextValue | null>(null)
@@ -48,6 +49,16 @@ export function ResizablePanelGroup({
 
   const [sizes, setSizes] = React.useState<number[]>(initialSizes)
 
+  const minSizes = React.useMemo(() => {
+    const mins: number[] = []
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child) && (child.type as { displayName?: string }).displayName === "ResizablePanel") {
+        mins.push((child.props as ResizablePanelProps).minSize ?? 10)
+      }
+    })
+    return mins
+  }, [children])
+
   // Inject panel/handle indexes via cloneElement so consumers don't need explicit index props
   let panelIdx = 0
   let handleIdx = 0
@@ -68,7 +79,7 @@ export function ResizablePanelGroup({
   })
 
   return (
-    <PanelGroupContext.Provider value={{ direction, sizes, setSizes }}>
+    <PanelGroupContext.Provider value={{ direction, sizes, setSizes, minSizes }}>
       <div
         className={cx(
           "flex h-full w-full overflow-hidden",
@@ -135,16 +146,21 @@ export function ResizableHandle({
   _index = 0,
   ...props
 }: ResizableHandleProps) {
-  const { direction, sizes, setSizes } = usePanelGroup()
-  const isDragging = React.useRef(false)
-  const startPos = React.useRef(0)
-  const startSizes = React.useRef<number[]>([])
+  const { direction, sizes, setSizes, minSizes } = usePanelGroup()
   const handleRef = React.useRef<HTMLDivElement>(null)
+  const sizesRef = React.useRef(sizes)
+  React.useLayoutEffect(() => {
+    sizesRef.current = sizes
+  }, [sizes])
+
+  const isDragging = React.useRef(false)
+  const dragStartPos = React.useRef(0)
+  const dragStartSizes = React.useRef<number[]>([])
 
   function clampSizes(rawSizes: number[], a: number, b: number, newA: number): number[] {
     const total = rawSizes[a] + rawSizes[b]
-    const minA = 10
-    const minB = 10
+    const minA = minSizes[a] ?? 10
+    const minB = minSizes[b] ?? 10
     let sa = newA
     let sb = total - sa
     if (sa < minA) { sa = minA; sb = total - minA }
@@ -157,54 +173,39 @@ export function ResizableHandle({
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     e.preventDefault()
+    if (!handleRef.current) return
+    handleRef.current.setPointerCapture(e.pointerId)
     isDragging.current = true
-    startPos.current = direction === "horizontal" ? e.clientX : e.clientY
-    startSizes.current = [...sizes]
-    handleRef.current?.setPointerCapture(e.pointerId)
+    dragStartPos.current = direction === "horizontal" ? e.clientX : e.clientY
+    dragStartSizes.current = [...sizesRef.current]
   }
 
   function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
     if (!isDragging.current) return
-    e.preventDefault()
     const container = handleRef.current?.parentElement
     if (!container) return
     const rect = container.getBoundingClientRect()
     const totalPx = direction === "horizontal" ? rect.width : rect.height
     if (totalPx === 0) return
-
-    const currentPos = direction === "horizontal" ? e.clientX : e.clientY
-    const deltaPct = ((currentPos - startPos.current) / totalPx) * 100
     const a = _index
     const b = _index + 1
-    if (b >= startSizes.current.length) return
-
-    const newA = (startSizes.current[a] ?? 0) + deltaPct
+    if (b >= dragStartSizes.current.length) return
+    const currentPos = direction === "horizontal" ? e.clientX : e.clientY
+    const deltaPct = ((currentPos - dragStartPos.current) / totalPx) * 100
+    const newA = (dragStartSizes.current[a] ?? 0) + deltaPct
     setSizes((prev) => clampSizes(prev, a, b, newA))
   }
 
   function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
+    if (!isDragging.current) return
     isDragging.current = false
     handleRef.current?.releasePointerCapture(e.pointerId)
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     const step = 2
-    // Per the WAI-ARIA APG (separator/slider pattern): in a right-to-left
-    // layout, the physical Left/Right arrow keys swap meaning so the key
-    // still moves the boundary toward the same side of the screen. Vertical
-    // resizing is unaffected since dir only mirrors the inline (horizontal)
-    // axis. Read the nearest dir attribute (matching how apps actually
-    // declare directionality, typically on <html> or a wrapping section)
-    // rather than getComputedStyle, since CSS `direction` is an inherited
-    // property whose cascade jsdom (unlike real browsers) doesn't model,
-    // making this approach both correct and unit-testable.
-    const isRtl =
-      direction === "horizontal" &&
-      handleRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl"
-    const isForward =
-      direction === "horizontal" ? e.key === (isRtl ? "ArrowLeft" : "ArrowRight") : e.key === "ArrowDown"
-    const isBack =
-      direction === "horizontal" ? e.key === (isRtl ? "ArrowRight" : "ArrowLeft") : e.key === "ArrowUp"
+    const isForward = direction === "horizontal" ? e.key === "ArrowRight" : e.key === "ArrowDown"
+    const isBack = direction === "horizontal" ? e.key === "ArrowLeft" : e.key === "ArrowUp"
     if (!isForward && !isBack) return
     e.preventDefault()
     const delta = isForward ? step : -step
@@ -227,9 +228,8 @@ export function ResizableHandle({
       onPointerUp={onPointerUp}
       onKeyDown={onKeyDown}
       className={cx(
-        "relative flex shrink-0 items-center justify-center bg-border transition-colors select-none",
-        "hover:bg-border-strong active:bg-border-strong",
-        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-border-strong ",
+        "group relative flex shrink-0 items-center justify-center select-none",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-border-strong",
         direction === "horizontal"
           ? "w-px h-full cursor-col-resize"
           : "h-px w-full cursor-row-resize",
@@ -237,8 +237,17 @@ export function ResizableHandle({
       )}
       {...props}
     >
+      {/* 1px visual divider */}
+      <div
+        className={cx(
+          "absolute bg-border transition-colors group-hover:bg-border-strong group-active:bg-border-strong",
+          direction === "horizontal"
+            ? "inset-y-0 left-1/2 -translate-x-1/2 w-px"
+            : "inset-x-0 top-1/2 -translate-y-1/2 h-px"
+        )}
+      />
       {withHandle && (
-        <div className="z-10 flex h-5 w-3.5 items-center justify-center rounded border border-border bg-surface-2 shadow-sm pointer-events-none">
+        <div className="relative z-10 flex h-5 w-3.5 items-center justify-center rounded border border-border bg-surface-2 shadow-sm">
           <svg
             width="6"
             height="12"

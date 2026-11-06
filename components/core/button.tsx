@@ -4,17 +4,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cx } from "@/lib/cx"
 
 /**
- * Floyka Button Component
+ * StampUI Button Component
  *
  * Design tokens used (defined in globals.css / tailwind.config):
- *   --foreground        #FAFAFA  (primary text)
- *   --background        #070708  (main bg)
- *   --surface-2         #09090B  (raised surface)
- *   --border            #23252A  (default border)
+ *   --foreground        primary text
+ *   --background        main bg
+ *   --surface-2         interactive surface
+ *   --border            default border
  *   --border-strong     slightly brighter graphite
  *   --muted-foreground  dimmed text
  *
- * Variants follow Floyka design rules:
+ * Variants follow StampUI design rules:
  *   - primary  → white bg / dark text (the only "colored" action)
  *   - outline  → transparent bg / border / foreground text
  *   - ghost    → transparent bg / muted text, subtle hover
@@ -46,31 +46,31 @@ const buttonVariants = cva(
         "icon-sm": "h-8 w-8 rounded-md",
       },
       variant: {
-        /** Primary: white bg, dark text. The strongest CTA. */
+        /** Primary, white bg, dark text. The strongest CTA. */
         primary:
           "bg-foreground text-background hover:bg-foreground/90",
 
-        /** Outline: bordered, transparent. Secondary actions. */
+        /** Outline, bordered with its own surface. Secondary actions. */
         outline:
-          "border border-border bg-transparent text-foreground hover:bg-surface-2 hover:border-border-strong",
+          "border border-border bg-surface-2 text-foreground hover:bg-surface-3 hover:border-border-strong",
 
-        /** Ghost: no border, no bg. Nav actions, icon rows. */
+        /** Ghost, no border, no bg. Nav actions, icon rows. */
         ghost:
           "bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground",
 
-        /** Danger: destructive action. Subtle tinted surface. */
+        /** Danger, destructive action. Own surface, tinted red on hover. */
         danger:
-          "bg-transparent border border-border text-foreground hover:bg-red-950/40 hover:border-red-900/50",
+          "bg-surface-2 border border-border text-foreground hover:bg-danger/10 hover:border-danger/30 hover:text-danger",
 
-        /** Rounded: pill-shaped outline. Decorative / marketing CTAs. */
+        /** Rounded, pill-shaped outline with its own surface. Decorative / marketing CTAs. */
         rounded:
-          "border border-border bg-transparent text-foreground hover:bg-surface-2 hover:border-border-strong rounded-full",
+          "border border-border bg-surface-2 text-foreground hover:bg-surface-3 hover:border-border-strong rounded-full",
 
-        /** Dashed: dashed border. Draft states, placeholder actions. */
+        /** Dashed, dashed border. Draft states, placeholder actions. */
         dashed:
           "border border-dashed border-border bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-border-strong",
 
-        /** Dashed Rounded: pill shape with dashed border. */
+        /** Dashed Rounded, pill shape with dashed border. */
         "dashed-rounded":
           "border border-dashed border-border bg-transparent text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-border-strong rounded-full",
       },

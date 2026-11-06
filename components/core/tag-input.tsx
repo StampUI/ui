@@ -6,6 +6,7 @@ import { cx } from "@/lib/cx"
 
 export interface TagInputProps {
   value?: string[]
+  defaultValue?: string[]
   onChange?: (tags: string[]) => void
   placeholder?: string
   max?: number
@@ -15,13 +16,14 @@ export interface TagInputProps {
 
 export function TagInput({
   value,
+  defaultValue,
   onChange,
   placeholder = "Add tag…",
   max,
   disabled = false,
   className,
 }: TagInputProps) {
-  const [tags, setTags] = React.useState<string[]>(value ?? [])
+  const [tags, setTags] = React.useState<string[]>(value ?? defaultValue ?? [])
   const [input, setInput] = React.useState("")
   const inputRef = React.useRef<HTMLInputElement>(null)
 

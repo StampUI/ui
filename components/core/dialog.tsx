@@ -17,7 +17,7 @@ export const DialogOverlay = React.forwardRef<
   <RadixDialog.Overlay
     ref={ref}
     className={cx(
-      "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm",
+      "fixed inset-0 z-50 bg-overlay ease-out",
       "data-[state=open]:animate-in data-[state=open]:fade-in-0",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       className
@@ -37,9 +37,7 @@ export const DialogContent = React.forwardRef<
       ref={ref}
       className={cx(
         "fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2",
-        "rounded-2xl border border-border bg-card p-6 shadow-xl outline-none",
-        "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+        "popup-surface max-h-[85vh] overflow-y-auto p-6 outline-none",
         className
       )}
       {...props}

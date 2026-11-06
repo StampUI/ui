@@ -22,7 +22,7 @@ const trackStyles = cva(
 )
 
 const indicatorStyles = cva(
-  "h-full w-full flex-1 rounded-full transition-transform duration-500 ease-out",
+  "h-full w-full flex-1 rounded-full transition-transform duration-slow ease-out",
   {
     variants: {
       variant: {

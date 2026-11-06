@@ -5,13 +5,13 @@ import { cx } from "@/lib/cx"
 const dotStyles = cva("relative inline-flex rounded-full shrink-0", {
   variants: {
     status: {
-      online: "bg-green-500",
+      online: "bg-success",
       offline: "bg-muted-foreground/40",
-      processing: "bg-yellow-400",
-      error: "bg-red-500",
-      warning: "bg-orange-400",
+      processing: "bg-warning",
+      error: "bg-danger",
+      warning: "bg-warning",
       unread: "bg-primary",
-      success: "bg-green-500",
+      success: "bg-success",
     },
     size: {
       sm: "h-1.5 w-1.5",
@@ -22,16 +22,16 @@ const dotStyles = cva("relative inline-flex rounded-full shrink-0", {
   defaultVariants: { status: "online", size: "md" },
 })
 
-const pingStyles = cva("absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping motion-reduce:animate-none", {
+const pingStyles = cva("absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping", {
   variants: {
     status: {
-      online: "bg-green-500",
+      online: "bg-success",
       offline: "hidden",
-      processing: "bg-yellow-400",
-      error: "bg-red-500",
-      warning: "bg-orange-400",
+      processing: "bg-warning",
+      error: "bg-danger",
+      warning: "bg-warning",
       unread: "hidden",
-      success: "bg-green-500",
+      success: "bg-success",
     },
   },
   defaultVariants: { status: "online" },

@@ -9,8 +9,8 @@ const buttonStyles = cva(
   {
     variants: {
       variant: {
-        destructive: "bg-red-500 text-white hover:bg-red-600",
-        warning: "bg-orange-400 text-white hover:bg-orange-500",
+        destructive: "bg-danger text-background hover:bg-danger/90",
+        warning: "bg-warning text-background hover:bg-warning/90",
       },
     },
     defaultVariants: { variant: "destructive" },
@@ -49,7 +49,7 @@ export function ConfirmAction({
     startRef.current = null
   }, [])
 
-  const tick = React.useCallback((ts: number) => {
+  const tick = React.useCallback(function tick(ts: number) {
     if (!startRef.current) startRef.current = ts
     const elapsed = ts - startRef.current
     const remaining = Math.max(0, 1 - elapsed / timeout)
@@ -84,7 +84,7 @@ export function ConfirmAction({
     >
       {pending && (
         <span
-          className="absolute left-0 top-0 h-full bg-white/20 transition-none"
+          className="absolute left-0 top-0 h-full bg-current/20 transition-none"
           style={{ width: `${progress}%` }}
         />
       )}

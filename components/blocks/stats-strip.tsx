@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Separator } from "@/components/core/separator"
 import { cx } from "@/lib/cx"

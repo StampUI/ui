@@ -42,6 +42,8 @@ export interface BlockManifest {
   frameworks: string[]
   dependencies: string[]
   files: BlockFile[]
+  /** Other registry slugs stamped alongside this one (e.g. a pattern composed of primitives). */
+  registryDependencies?: string[]
   tokens: string[]
 
   // --- Capabilities ---

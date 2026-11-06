@@ -22,42 +22,43 @@ export function Marquee({
   const animation = direction === "left" ? "marquee-left" : "marquee-right"
 
   return (
-    <div
-      className={cx("overflow-hidden [--marquee-gap:var(--gap)] flex w-full", className)}
-      style={{ "--gap": `${gap}px` } as React.CSSProperties}
-    >
+    <div className={cx("overflow-hidden flex w-full", className)}>
       <style>{`
         @keyframes marquee-left {
           from { transform: translateX(0); }
-          to { transform: translateX(calc(-50% - var(--gap) / 2)); }
+          to   { transform: translateX(-50%); }
         }
         @keyframes marquee-right {
-          from { transform: translateX(calc(-50% - var(--gap) / 2)); }
-          to { transform: translateX(0); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [data-marquee-track] { animation: none !important; }
-          [data-marquee-clone] { display: none; }
+          from { transform: translateX(-50%); }
+          to   { transform: translateX(0); }
         }
       `}</style>
       <div
-        data-marquee-track
         className={cx(
-          "flex min-w-full shrink-0 items-center",
+          "flex shrink-0",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
         style={{
-          gap: `${gap}px`,
           animationName: animation,
           animationDuration: duration,
           animationTimingFunction: "linear",
           animationIterationCount: "infinite",
         }}
       >
-        <div className="flex shrink-0 items-center" style={{ gap: `${gap}px` }}>
+        {/* paddingRight on each copy = gap, so every copy carries its own
+            trailing space. Total = 2×copy_width → -50% shifts exactly
+            one copy, keeping uniform gap at the loop boundary. */}
+        <div
+          className="flex shrink-0 items-center"
+          style={{ gap: `${gap}px`, paddingRight: `${gap}px` }}
+        >
           {children}
         </div>
-        <div data-marquee-clone className="flex shrink-0 items-center" style={{ gap: `${gap}px` }} aria-hidden>
+        <div
+          className="flex shrink-0 items-center"
+          style={{ gap: `${gap}px`, paddingRight: `${gap}px` }}
+          aria-hidden
+        >
           {children}
         </div>
       </div>

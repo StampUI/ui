@@ -3,16 +3,16 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cx } from "@/lib/cx"
 
 const badgeStyles = cva(
-  "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium tracking-wide transition-colors",
+  "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium tracking-wide transition-colors",
   {
     variants: {
       variant: {
         default: "bg-surface-2 text-foreground border border-border",
         secondary: "bg-surface-2 text-muted-foreground border border-border-soft",
-        success: "bg-green-950/60 text-green-400 border border-green-900/50",
-        warning: "bg-yellow-950/60 text-yellow-400 border border-yellow-900/50",
-        danger: "bg-red-950/60 text-red-400 border border-red-900/50",
-        info: "bg-blue-950/60 text-blue-400 border border-blue-900/50",
+        success: "border bg-success-soft text-success border-success/20",
+        warning: "border bg-warning-soft text-warning border-warning/20",
+        danger: "border bg-danger-soft text-danger border-danger/20",
+        info: "bg-surface-2 text-muted-foreground border border-border",
         outline: "bg-transparent text-muted-foreground border border-border",
         neutral: "bg-surface-2 text-muted-foreground border border-border-soft",
         free: "bg-surface-2 text-muted-foreground border border-border-soft",
@@ -20,6 +20,11 @@ const badgeStyles = cva(
         new: "bg-surface-raised text-foreground border border-border",
         signal: "bg-surface-3 text-foreground border border-border-strong",
         locked: "bg-surface-3 text-muted-foreground border border-border",
+        /* Legacy hue names, kept for API compatibility. Mapped to graphite or the nearest status token. */
+        purple: "bg-surface-3 text-foreground border border-border-strong",
+        orange: "border bg-warning-soft text-warning border-warning/20",
+        pink:   "bg-surface-2 text-muted-foreground border border-border",
+        teal:   "border bg-success-soft text-success border-success/20",
       },
     },
     defaultVariants: {
