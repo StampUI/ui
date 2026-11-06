@@ -35,7 +35,9 @@ export function Marquee({
       `}</style>
       <div
         className={cx(
-          "flex shrink-0",
+          // Reduced motion stops the loop (the inline animation needs !important)
+          // and hides the duplicate copy below so nothing shows twice.
+          "flex shrink-0 motion-reduce:animate-none!",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
         style={{
@@ -55,7 +57,7 @@ export function Marquee({
           {children}
         </div>
         <div
-          className="flex shrink-0 items-center"
+          className="flex shrink-0 items-center motion-reduce:hidden"
           style={{ gap: `${gap}px`, paddingRight: `${gap}px` }}
           aria-hidden
         >

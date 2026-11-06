@@ -90,7 +90,7 @@ export function NavigationMenuItem({ id, trigger, children, className }: Navigat
       {isOpen && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="popup-surface absolute left-0 top-full mt-1.5 z-50 min-w-48 p-2"
+          className="popup-surface absolute start-0 top-full mt-1.5 z-50 min-w-48 p-2"
         >
           {children}
         </div>

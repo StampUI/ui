@@ -44,7 +44,7 @@ export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, c
         aria-label="Previous page"
         className={itemClass}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
       </button>
 
       {pages.map((p, i) =>
@@ -73,7 +73,7 @@ export function Pagination({ page, totalPages, onPageChange, siblingCount = 1, c
         aria-label="Next page"
         className={itemClass}
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-4 w-4 rtl:rotate-180" />
       </button>
     </nav>
   )

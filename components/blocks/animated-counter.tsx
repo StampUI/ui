@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { useReducedMotion } from "@/components/core/reveal"
 
 interface AnimatedCounterProps {
   from?: number
@@ -27,8 +28,14 @@ export function AnimatedCounter({
   const [value, setValue] = React.useState(from)
   const startTimeRef = React.useRef<number | null>(null)
   const rafRef = React.useRef<number | null>(null)
+  // Reduced motion skips the count and shows the final value.
+  const reduced = useReducedMotion()
 
   React.useEffect(() => {
+    if (reduced) {
+      onComplete?.()
+      return
+    }
     startTimeRef.current = null
     const startValue = from
 
@@ -55,9 +62,9 @@ export function AnimatedCounter({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
     }
-  }, [from, to, duration, decimals, onComplete])
+  }, [from, to, duration, decimals, onComplete, reduced])
 
-  const formatted = value.toLocaleString("en-US", {
+  const formatted = (reduced ? to : value).toLocaleString("en-US", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   })

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { useReducedMotion } from "@/components/core/reveal"
 
 export interface SignalArcProps {
   size?: number
@@ -9,6 +10,8 @@ export interface SignalArcProps {
 }
 
 export function SignalArc({ size = 64, className }: SignalArcProps) {
+  // SMIL ignores CSS, so reduced motion drops the animation elements.
+  const reduced = useReducedMotion()
   const rings = [
     { r: 6, dur: "1.6s", begin: "0s" },
     { r: 6, dur: "1.6s", begin: "0.4s" },
@@ -22,8 +25,12 @@ export function SignalArc({ size = 64, className }: SignalArcProps) {
         <circle cx="32" cy="32" r="3" fill="currentColor" />
         {rings.map((ring, i) => (
           <circle key={i} cx="32" cy="32" r={ring.r} stroke="currentColor" strokeWidth="1.5" fill="none">
-            <animate attributeName="r" values={`${ring.r};28`} dur={ring.dur} begin={ring.begin} repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.8 1" />
-            <animate attributeName="opacity" values="0.8;0" dur={ring.dur} begin={ring.begin} repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.8 1" />
+            {!reduced && (
+              <>
+                <animate attributeName="r" values={`${ring.r};28`} dur={ring.dur} begin={ring.begin} repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.8 1" />
+                <animate attributeName="opacity" values="0.8;0" dur={ring.dur} begin={ring.begin} repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.8 1" />
+              </>
+            )}
           </circle>
         ))}
       </svg>

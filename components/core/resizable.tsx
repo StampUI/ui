@@ -191,7 +191,10 @@ export function ResizableHandle({
     const b = _index + 1
     if (b >= dragStartSizes.current.length) return
     const currentPos = direction === "horizontal" ? e.clientX : e.clientY
-    const deltaPct = ((currentPos - dragStartPos.current) / totalPx) * 100
+    // Under dir="rtl" a horizontal group lays out right to left, so moving
+    // the pointer right shrinks the first panel instead of growing it.
+    const rtl = direction === "horizontal" && handleRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl"
+    const deltaPct = ((currentPos - dragStartPos.current) / totalPx) * 100 * (rtl ? -1 : 1)
     const newA = (dragStartSizes.current[a] ?? 0) + deltaPct
     setSizes((prev) => clampSizes(prev, a, b, newA))
   }
@@ -204,8 +207,18 @@ export function ResizableHandle({
 
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     const step = 2
-    const isForward = direction === "horizontal" ? e.key === "ArrowRight" : e.key === "ArrowDown"
-    const isBack = direction === "horizontal" ? e.key === "ArrowLeft" : e.key === "ArrowUp"
+    // WAI-ARIA APG separator pattern: under right-to-left the physical
+    // Left/Right keys swap meaning, so a key still moves the boundary toward
+    // the same side of the screen. dir only mirrors the inline axis, so
+    // vertical groups are unaffected. The nearest dir attribute is read
+    // instead of getComputedStyle, which jsdom does not cascade.
+    const isRtl =
+      direction === "horizontal" &&
+      handleRef.current?.closest("[dir]")?.getAttribute("dir") === "rtl"
+    const isForward =
+      direction === "horizontal" ? e.key === (isRtl ? "ArrowLeft" : "ArrowRight") : e.key === "ArrowDown"
+    const isBack =
+      direction === "horizontal" ? e.key === (isRtl ? "ArrowRight" : "ArrowLeft") : e.key === "ArrowUp"
     if (!isForward && !isBack) return
     e.preventDefault()
     const delta = isForward ? step : -step

@@ -20,7 +20,7 @@ function panelWidth(el: HTMLElement) {
   return parseFloat(el.style.width)
 }
 
-describe("ResizableHandle keyboard interaction", () => {
+describe("ResizableHandle keyboard interaction and RTL", () => {
   it("ArrowRight grows the first panel in LTR", async () => {
     const user = userEvent.setup()
     render(<Split dir="ltr" />)
@@ -45,5 +45,41 @@ describe("ResizableHandle keyboard interaction", () => {
     await user.keyboard("{ArrowLeft}")
 
     expect(panelWidth(panelA)).toBeLessThan(before)
+  })
+
+  it("ArrowRight and ArrowLeft swap meaning under dir=rtl (WAI-ARIA APG)", async () => {
+    const user = userEvent.setup()
+    render(<Split dir="rtl" />)
+    const handle = screen.getByRole("separator")
+    const panelA = screen.getByTestId("panel-a")
+    const before = panelWidth(panelA)
+
+    handle.focus()
+    await user.keyboard("{ArrowRight}")
+    expect(panelWidth(panelA)).toBeLessThan(before) // opposite of the LTR case above
+
+    const afterRight = panelWidth(panelA)
+    await user.keyboard("{ArrowLeft}{ArrowLeft}")
+    expect(panelWidth(panelA)).toBeGreaterThan(afterRight)
+  })
+
+  it("vertical groups ignore dir=rtl (ArrowDown still grows the first panel)", async () => {
+    const user = userEvent.setup()
+    render(
+      <div dir="rtl">
+        <ResizablePanelGroup direction="vertical" defaultSizes={[50, 50]}>
+          <ResizablePanel data-testid="panel-a">A</ResizablePanel>
+          <ResizableHandle aria-label="Resize" />
+          <ResizablePanel>B</ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    )
+    const panelA = screen.getByTestId("panel-a")
+    const before = parseFloat(panelA.style.height)
+
+    screen.getByRole("separator").focus()
+    await user.keyboard("{ArrowDown}")
+
+    expect(parseFloat(panelA.style.height)).toBeGreaterThan(before)
   })
 })

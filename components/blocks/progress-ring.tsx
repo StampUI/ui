@@ -56,6 +56,8 @@ export function ProgressRing({
           strokeDashoffset={offset}
           strokeLinecap="round"
           transform={`rotate(-90 ${center} ${center})`}
+          // Reduced motion jumps to the value (the inline transition needs !important).
+          className="motion-reduce:transition-none!"
           style={{ transition: "stroke-dashoffset 600ms ease-out" }}
         />
       </svg>

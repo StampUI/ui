@@ -30,7 +30,7 @@ export function GradientText({
 
   return (
     <Component
-      className={cx("bg-clip-text text-transparent", className)}
+      className={cx("bg-clip-text text-transparent motion-reduce:animate-none!", className)}
       style={style}
     >
       {children}

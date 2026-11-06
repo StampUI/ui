@@ -11,6 +11,43 @@ export interface RegistryExplorerProps {
   initialBlocks: (BlockManifest & { name?: string; previewThumbnail?: string })[]
 }
 
+function FilterGroup({
+  label,
+  options,
+  active,
+  onChange,
+}: {
+  label: string
+  options: string[]
+  active: string
+  onChange: (value: string) => void
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="w-20 shrink-0 pt-1 text-xs font-medium text-muted-foreground">{label}</span>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((option) => (
+          <button
+            key={option}
+            type="button"
+            aria-pressed={active === option}
+            onClick={() => onChange(option)}
+            className={cx(
+              "rounded-md border px-2.5 py-1 text-xs font-medium capitalize transition-colors duration-150 ease-out",
+              "outline-none focus-visible:ring-1 focus-visible:ring-border-strong",
+              active === option
+                ? "border-border-strong bg-surface-3 text-foreground"
+                : "border-border bg-surface-2 text-muted-foreground hover:bg-surface-3 hover:text-foreground"
+            )}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function RegistryExplorer({ initialBlocks }: RegistryExplorerProps) {
   const searchParams = useSearchParams()
   const search = searchParams?.get("q") || ""
@@ -19,9 +56,20 @@ export function RegistryExplorer({ initialBlocks }: RegistryExplorerProps) {
   const [activeStatus, setActiveStatus] = React.useState<string>("All")
 
 
-  const categories = ["All", ...Array.from(new Set(initialBlocks.map(b => b.category)))]
+  const categories = React.useMemo(
+    () => ["All", ...Array.from(new Set(initialBlocks.map((b) => b.category)))],
+    [initialBlocks]
+  )
   const difficulties = ["All", "beginner", "intermediate", "advanced"]
   const statuses = ["All", "free", "pro", "new"]
+
+  const hasActiveFilters = activeCategory !== "All" || activeDifficulty !== "All" || activeStatus !== "All"
+
+  function clearFilters() {
+    setActiveCategory("All")
+    setActiveDifficulty("All")
+    setActiveStatus("All")
+  }
 
   const filteredBlocks = React.useMemo(() => {
     return initialBlocks.filter((block) => {
@@ -47,8 +95,22 @@ export function RegistryExplorer({ initialBlocks }: RegistryExplorerProps) {
               {filteredBlocks.length} items
             </span>
           </div>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="rounded-md px-2 py-1 text-xs font-medium text-muted-foreground outline-none transition-colors duration-150 ease-out hover:bg-surface-2 hover:text-foreground focus-visible:ring-1 focus-visible:ring-border-strong"
+            >
+              Clear filters
+            </button>
+          )}
         </div>
 
+        <div className="flex flex-col gap-3">
+          <FilterGroup label="Category" options={categories} active={activeCategory} onChange={setActiveCategory} />
+          <FilterGroup label="Tier" options={statuses} active={activeStatus} onChange={setActiveStatus} />
+          <FilterGroup label="Difficulty" options={difficulties} active={activeDifficulty} onChange={setActiveDifficulty} />
+        </div>
       </div>
         {filteredBlocks.length > 0 ? (
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
@@ -63,14 +125,15 @@ export function RegistryExplorer({ initialBlocks }: RegistryExplorerProps) {
             <p className="text-sm text-muted-foreground mt-1 max-w-sm">
               We couldn't find any blocks matching your current filters. Try adjusting your search or clearing filters.
             </p>
-            <button 
-              onClick={() => {
-                window.location.href = "/blocks"
-              }}
-              className="mt-6 text-sm text-foreground font-medium underline underline-offset-4 decoration-border-strong hover:decoration-foreground"
-            >
-              Clear all filters
-            </button>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-6 text-sm text-foreground font-medium underline underline-offset-4 decoration-border-strong hover:decoration-foreground"
+              >
+                Clear all filters
+              </button>
+            )}
           </div>
         )}
     </div>

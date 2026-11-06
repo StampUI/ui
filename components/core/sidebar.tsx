@@ -65,8 +65,9 @@ export function SidebarItem({ icon, label, active, badge, collapsed, href, class
     <Tag
       {...(href ? { href } : { type: "button" })}
       aria-current={active ? "page" : undefined}
+      aria-label={collapsed ? label : undefined}
       className={cx(
-        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors w-full",
+        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-start text-sm font-medium transition-colors w-full",
         active
           ? "bg-surface-2 text-foreground"
           : "text-muted-foreground hover:bg-surface-2/60 hover:text-foreground",
@@ -113,6 +114,8 @@ export function SidebarGroup({ icon, label, defaultOpen = false, collapsed, clas
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={collapsed ? undefined : open}
+        aria-label={collapsed ? label : undefined}
+        title={collapsed ? label : undefined}
         className={cx(
           "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-surface-2/60 hover:text-foreground transition-colors w-full",
           collapsed && "justify-center px-2"
@@ -121,7 +124,7 @@ export function SidebarGroup({ icon, label, defaultOpen = false, collapsed, clas
         {icon && <span className="shrink-0 text-[1em]">{icon}</span>}
         {!collapsed && (
           <>
-            <span className="flex-1 truncate text-left">{label}</span>
+            <span className="flex-1 truncate text-start">{label}</span>
             <ChevronRight className={cx("h-3.5 w-3.5 shrink-0 transition-transform duration-slow ease-out", open && "rotate-90")} />
           </>
         )}
@@ -135,7 +138,7 @@ export function SidebarGroup({ icon, label, defaultOpen = false, collapsed, clas
           )}
         >
           <div className="min-h-0 overflow-hidden">
-            <div className="mt-0.5 ml-3 border-l border-border pl-3 flex flex-col gap-0.5">
+            <div className="mt-0.5 ms-3 border-s border-border ps-3 flex flex-col gap-0.5">
               {children}
             </div>
           </div>

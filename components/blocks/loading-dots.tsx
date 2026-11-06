@@ -32,7 +32,7 @@ export function LoadingDots({
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className={cx("rounded-full bg-foreground animate-bounce", dotSizes[size])}
+            className={cx("rounded-full bg-foreground animate-bounce motion-reduce:animate-none", dotSizes[size])}
             style={{ animationDelay: `${i * 0.15}s`, animationDuration: "0.8s" }}
           />
         ))}
@@ -46,7 +46,7 @@ export function LoadingDots({
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className={cx("rounded-full bg-foreground animate-pulse", dotSizes[size])}
+            className={cx("rounded-full bg-foreground animate-pulse motion-reduce:animate-none", dotSizes[size])}
             style={{ animationDelay: `${i * 0.2}s`, animationDuration: "1.2s" }}
           />
         ))}
@@ -59,7 +59,7 @@ export function LoadingDots({
       {[0, 1, 2, 3].map((i) => (
         <div
           key={i}
-          className={cx("w-1 rounded-sm bg-foreground origin-bottom animate-[bars_1s_ease-in-out_infinite]", barHeights[size])}
+          className={cx("w-1 rounded-sm bg-foreground origin-bottom animate-[bars_1s_ease-in-out_infinite] motion-reduce:animate-none", barHeights[size])}
           style={{ animationDelay: `${i * 0.12}s` }}
         />
       ))}

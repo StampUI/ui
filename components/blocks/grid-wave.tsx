@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { useReducedMotion } from "@/components/core/reveal"
 
 export interface GridWaveProps {
   size?: number
@@ -13,6 +14,8 @@ export function GridWave({ size = 64, className }: GridWaveProps) {
   const spacing = 14
   const r = 3
   const start = (64 - (count - 1) * spacing) / 2
+  // SMIL ignores CSS, so reduced motion drops the animation elements.
+  const reduced = useReducedMotion()
 
   return (
     <div className={cx("inline-flex items-center justify-center", className)}>
@@ -28,8 +31,12 @@ export function GridWave({ size = 64, className }: GridWaveProps) {
                 r={r}
                 fill="currentColor"
               >
-                <animate attributeName="opacity" values="0.12;1;0.12" dur="1.3s" begin={`${delay}s`} repeatCount="indefinite" />
-                <animate attributeName="r" values={`${r * 0.6};${r};${r * 0.6}`} dur="1.3s" begin={`${delay}s`} repeatCount="indefinite" />
+                {!reduced && (
+                  <>
+                    <animate attributeName="opacity" values="0.12;1;0.12" dur="1.3s" begin={`${delay}s`} repeatCount="indefinite" />
+                    <animate attributeName="r" values={`${r * 0.6};${r};${r * 0.6}`} dur="1.3s" begin={`${delay}s`} repeatCount="indefinite" />
+                  </>
+                )}
               </circle>
             )
           })

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cx } from "@/lib/cx"
+import { useReducedMotion } from "@/components/core/reveal"
 
 interface TypewriterTextProps {
   words: string[]
@@ -23,8 +24,12 @@ export function TypewriterText({
   const [wordIndex, setWordIndex] = React.useState(0)
   const [displayed, setDisplayed] = React.useState("")
   const [phase, setPhase] = React.useState<Phase>("typing")
+  // The typing and deleting cycle is decorative: reduced motion shows the
+  // first word and leaves it.
+  const reduced = useReducedMotion()
 
   React.useEffect(() => {
+    if (reduced) return
     const word = words[wordIndex]
 
     if (phase === "typing") {
@@ -51,12 +56,12 @@ export function TypewriterText({
         setPhase("typing")
       }
     }
-  }, [phase, displayed, wordIndex, words, typingSpeed, deletingSpeed, pauseDuration])
+  }, [phase, displayed, wordIndex, words, typingSpeed, deletingSpeed, pauseDuration, reduced])
 
   return (
     <span className={cx(className)}>
-      {displayed}
-      <span className="inline-block w-0.5 h-[1em] bg-current animate-[blink_1s_step-end_infinite] align-text-bottom ml-0.5 rounded-sm" />
+      {reduced ? words[0] ?? "" : displayed}
+      <span className="inline-block w-0.5 h-[1em] bg-current animate-[blink_1s_step-end_infinite] motion-reduce:animate-none align-text-bottom ml-0.5 rounded-sm" />
     </span>
   )
 }
