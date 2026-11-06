@@ -23,6 +23,13 @@ const entries: Entry[] = Object.entries(modules)
 export function App() {
   const [selected, setSelected] = React.useState(entries[0]?.name)
   const active = entries.find((e) => e.name === selected) ?? entries[0]
+  const [theme, setTheme] = React.useState<"dark" | "light">("dark")
+
+  React.useEffect(() => {
+    // Same switch the real theme uses: dark on :root, light via data-theme.
+    if (theme === "light") document.documentElement.dataset.theme = "light"
+    else delete document.documentElement.dataset.theme
+  }, [theme])
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
@@ -43,6 +50,12 @@ export function App() {
             {e.name}
           </button>
         ))}
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="mt-3 block w-full rounded-lg border border-border px-2 py-1.5 text-left text-sm text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+        >
+          Theme: {theme}
+        </button>
       </nav>
       <main className="flex flex-1 items-center justify-center overflow-auto p-10">
         {active ? <active.Component /> : <p className="text-muted-foreground">No examples found.</p>}
