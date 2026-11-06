@@ -8,7 +8,7 @@ StampUI includes a public MIT open-source core and a commercial catalog:
 
 - **This repo (`StampUI/ui`)**: the free MIT components and blocks, exactly as the CLI installs them.
 - **[`StampUI/cli`](https://github.com/StampUI/cli)**: the CLI, MIT, developed in the open.
-- **Commercial catalog**: pro blocks and templates sold at [stampui.com](https://stampui.com). They live outside the public repos and fund the maintenance of the free core.
+- **Pro catalog**: Pro blocks and Pages sold at [stampui.com](https://stampui.com/pricing). They live outside the public repos and fund the maintenance of the free core.
 
 Contributions to the public repos should only target the MIT open-source surface. Do not submit PRs that include paid/pro source code, private registry data, license-gated files, or commercial catalog content. If your PR reimplements something that exists in the pro catalog, that's fine as long as it is your own work; what we can't accept is copied pro source.
 
@@ -33,7 +33,7 @@ npm install
 npm run dev
 ```
 
-It renders whatever is in `examples/` with the real dark-mode tokens, useful for the before/after screenshots visual PRs need. To preview something without an example yet, add one first (see [examples/README.md](./examples/README.md)). Every component's live playground is also on [stampui.com](https://stampui.com).
+It renders whatever is in `examples/` with the real theme tokens (the stylesheet `stampui init` writes), with a switch between dark and light, useful for the before/after screenshots visual PRs need. To preview something without an example yet, add one first (see [examples/README.md](./examples/README.md)). Every component's live playground is also on [stampui.com](https://stampui.com).
 
 ## Ways to contribute
 
@@ -45,13 +45,16 @@ It renders whatever is in `examples/` with the real dark-mode tokens, useful for
 
 ## Design system rules
 
-StampUI is dark-first, token-based, and intentionally minimal. Browse [stampui.com](https://stampui.com) to understand the visual system before contributing. Contributions that deviate from it will not be accepted.
+StampUI is monochrome, token-based, and intentionally minimal, in dark (the default) and light. Browse [stampui.com](https://stampui.com) to understand the visual system before contributing. Contributions that deviate from it will not be accepted.
 
-- No hardcoded hex values in `className`; use design tokens only (`bg-surface-2`, `text-muted-foreground`, etc.)
+- Colour comes from design tokens only (`bg-surface-2`, `text-muted-foreground`, `border-border-soft`, `bg-success-soft`, etc.): no hex, rgb or hsl in `className` or `style` (chart colour data excepted)
+- No raw white or black utilities (`bg-white`, `text-black`, `bg-black/40`): use `text-foreground`, `bg-inverse`, `text-on-status` or `bg-overlay`
+- No `dark:` or `light:` variants; themes come from tokens, so a component works in both without knowing which is active
+- Chart series colour comes from `chart-palette` (`--chart-1..5`), never from status tokens
 - Conditional classNames always use `cx()` from `@/lib/cx`, never template literals
 - No gradients, glassmorphism, glow effects, or colorful shadows
 - Hover states are subtle surface or border shifts only
-- All components are `"use client"` and self-contained
+- Components that use state, effects or event handlers start with `"use client"`; presentational ones stay server-safe. Every component is self-contained
 
 ## TypeScript expectations
 
@@ -67,7 +70,7 @@ StampUI is dark-first, token-based, and intentionally minimal. Browse [stampui.c
 - Icon-only controls need an accessible name (`aria-label` or visually hidden text)
 - Animations should respect `prefers-reduced-motion`. Two mechanisms depending on how the animation is built:
   - CSS via Tailwind utility classes (`animate-bounce`, `animate-pulse`, arbitrary `animate-[...]`): add the `motion-reduce:animate-none` variant. No JS needed.
-  - RAF loops, SVG SMIL (`<animate>`, `<animateTransform>`), or JS timers: use `usePrefersReducedMotion()` from `lib/use-reduced-motion.ts`.
+  - RAF loops, SVG SMIL (`<animate>`, `<animateTransform>`), or JS timers: use `useReducedMotion()` from `@/components/core/reveal`, or wrap the effect in `MotionGate` (`components/effects/motion-gate.tsx`).
   - Policy: purely decorative/ambient loops (orbit-trail, marquee, gradient pans, cursor blinks) stop entirely. Status/feedback indicators (typing dots, status pulse, loading spinners) keep the shape visible but stop moving, since removing them would remove information. Value-driven tweens (animated numbers, progress rings) jump straight to the final value instead of easing.
 - If you're fixing an a11y issue, say which WAI-ARIA pattern or WCAG criterion it addresses if you know it; if you don't, describe the observed problem and we'll map it
 
@@ -76,7 +79,7 @@ StampUI is dark-first, token-based, and intentionally minimal. Browse [stampui.c
 1. Fork and branch from `main`
 2. Keep changes focused: one component or fix per PR
 3. `npm run typecheck` passes
-4. **Visual changes include before/after screenshots** (dark mode at minimum; light mode too if the component supports it)
+4. **Visual changes include before/after screenshots** (in both dark and light; the preview harness has a theme switch)
 5. Describe what changed and why; link the issue if one exists
 6. Update usage docs/examples if the public API of a component changed
 

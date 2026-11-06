@@ -22,4 +22,4 @@ Show a rough usage example:
 Explain why this is general enough to be a shared component and not something project-specific.
 
 **Design notes**
-Any relevant constraints — must it work dark-mode-first? Does it have specific accessibility requirements?
+Any relevant constraints: does it need anything beyond the dark and light themes? Does it have specific accessibility requirements?

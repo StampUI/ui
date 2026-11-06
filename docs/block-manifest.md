@@ -1,6 +1,6 @@
 # Block manifest specification
 
-Status: **v1.0, fields decided; two items pending implementation** (see [Decisions](#decisions-2026-07-08) below). The format described here is what the `stampui` CLI, the stampui.com registry, and the `@stampui/mcp` server consume today. Everything under [Fields](#fields) reflects the manifest as it ships in `@stampui/blocks` right now, not a proposal; `integrity` and lock-file version tracking for shared files are decided but not yet built, tracked in linked issues. Changes will be noted in the [CHANGELOG](../CHANGELOG.md). Feedback is welcome via the RFC issue template.
+Status: **v1.0, fields decided; two items pending implementation** (see [Decisions](#decisions-2026-07-08) below). The format described here is what the `stampui` CLI and the stampui.com registry consume today (an MCP server that reads it is planned, not released yet). Everything under [Fields](#fields) reflects the manifest as it ships in `@stampui/blocks` right now, not a proposal; `integrity` and lock-file version tracking for shared files are decided but not yet built, tracked in linked issues. Changes will be noted in the [CHANGELOG](../CHANGELOG.md). Feedback is welcome via the RFC issue template.
 
 ## What a block manifest is
 
@@ -12,7 +12,7 @@ A block manifest is a JSON-compatible record describing one installable unit of 
 - which version is current, so installed copies can be updated
 - whether it is freely installable or requires a commercial license
 
-The canonical TypeScript definition ships in the MIT [`@stampui/blocks`](https://www.npmjs.com/package/@stampui/blocks) package and is mirrored in this repo at [`types.ts`](../types.ts) (`BlockManifest`). The full free registry is exported there as `manifests` (a `Record<string, BlockManifest>`) and `blockList`.
+The canonical TypeScript definition ships in the MIT [`@stampui/blocks`](https://www.npmjs.com/package/@stampui/blocks) package and is mirrored in this repo at [`types.ts`](../types.ts) (`BlockManifest`). The registry is exported there as `manifests` (a `Record<string, BlockManifest>`) and `blockList`: every free entry with its source, and Pro entries as metadata only.
 
 ## Example
 
@@ -54,7 +54,7 @@ A real free block, as it appears in the registry:
 |-------|------|---------|
 | `slug` | `string` | Unique kebab-case identifier; the argument to `stampui add <slug>` |
 | `title` | `string` | Human-readable name |
-| `description` | `string` | One or two sentences; used by search and by MCP clients |
+| `description` | `string` | One or two sentences; used by search and by agent tooling |
 | `category` | `string` | Grouping used by `stampui list` (e.g. `UI`, `Marketing`) |
 | `tags` | `string[]` | Free-text search keywords |
 
@@ -81,7 +81,8 @@ A real free block, as it appears in the registry:
 | `difficulty` | `"beginner" \| "intermediate" \| "advanced"` | Rough integration effort |
 | `frameworks` | `string[]` | Environments the block is verified in. The type is an informal `string[]`; see [Decisions](#decisions-2026-07-08) for the enumerated set of values it should be restricted to |
 | `dependencies` | `string[]` | npm packages the block's source imports (beyond React itself). The CLI prints an install command for these; it does not install them silently |
-| `files` | `BlockFile[]` | The source files that make up the block; see below |
+| `files` | `BlockFile[]` | The source files that make up the block; see below. May be empty for a pattern made only of other blocks |
+| `registryDependencies` | `string[]` (optional) | Other registry slugs installed alongside this one, e.g. every chart lists `chart-palette`, `text-reveal` lists `use-entrance`. Installers resolve them recursively |
 | `tokens` | `string[]` | Design tokens (CSS variables) the block consumes; useful for theming tools |
 
 Each `BlockFile` is:
@@ -107,7 +108,7 @@ interface BlockFile {
 ## How installation works against a manifest
 
 1. Resolve the slug in the manifest map.
-2. If `status` is `free`/`new`: copy each `files[].path` from the public package into the project at the same relative path.
+2. If `status` is `free`/`new`: copy each `files[].path` from the public package into the project at the same relative path. Resolve `registryDependencies` the same way.
 3. If `status` is `pro`/`locked`: request the files from the licensed registry over HTTPS with the user's license key; the server decides access. Public tooling must not attempt to bypass this.
 4. Record `{ version, installedAt }` under the slug in `stampui.lock.json`.
 5. Surface `dependencies` to the user.
@@ -117,7 +118,9 @@ Updates repeat the same flow for blocks whose lock-file version is behind the ma
 ## Consuming the manifest from agents and tools
 
 - **npm**: `import { manifests, blockList } from "@stampui/blocks"` gives the full free registry with types.
-- **MCP**: [`@stampui/mcp`](https://www.npmjs.com/package/@stampui/mcp) exposes `list_blocks`, `search_blocks`, `get_block`, and `stamp_block` over the Model Context Protocol, so agents can query the same data conversationally.
+- **CLI**: `npx stampui list` and `npx stampui search <query>` read the same registry.
+- **Docs for agents**: [stampui.com/llms.txt](https://stampui.com/llms.txt) summarizes the catalog.
+- **MCP**: planned, not released yet.
 - **Free vs pro from a tool's perspective**: for `free` blocks, everything including source is public. For `pro` blocks, only the metadata above is visible; tools should show the block exists and how to get a license, nothing more.
 
 ## Implementing the format in a third-party registry

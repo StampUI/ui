@@ -2,7 +2,23 @@
 
 Notable changes to the free component set and this repository. Component-level versions live in the block manifests (see [docs/block-manifest.md](./docs/block-manifest.md)).
 
-## Unreleased
+## 2026-11-06
+
+Free sources synced with `@stampui/blocks` 2.1.0. The repo now holds 130 free files, exactly what `npx stampui add` installs.
+
+- Every free source supports the dark (default) and light themes from the same tokens. Light is `data-theme="light"` on `<html>`.
+- Free charts: bar-list, sparkline, heatmap, meter and combo-chart, sharing the new `chart-palette` util (graphite by default, categorical and accent opt-in via `data-chart`).
+- combo-chart no longer imports the Pro chart module, so it installs without a license.
+- Free effects (reveal, motion-gate, text-reveal, shimmer-text, count-up, use-entrance) and backgrounds (dot-grid-ripple, grid-pulse, waves).
+- New core components: carousel, input-otp, number-input, copy-input, rating, segmented-control, shortcut, color-swatch, loading-bar, reading-progress.
+- New blocks: hero-centered, faq-section, newsletter-inline, stat-cards, terminal-block, login-email, signup-simple, forgot-password, and code-block (`components/docs/`, with `lib/highlight.ts`).
+- Tooltip works without an app-level TooltipProvider.
+- `types.ts`: `BlockManifest` gains `registryDependencies`.
+- Preview harness uses the exact CLI theme stylesheet and can switch between dark and light.
+- Tooling: `recharts` and `@shikijs/*` added to devDependencies, `eslint-plugin-react-hooks` 7, `lib/use-reduced-motion.ts` removed (Reveal ships `useReducedMotion`).
+- Not carried over: a few fixes made only in this repo are not in the synced sources yet, so they were dropped with their tests: the command palette's APG combobox rewrite, RTL fixes in layout primitives and `resizable.tsx`, the registry-explorer filter chips, `aria-label`s on icon-only controls (calendar navigation, command clear-search, sidebar collapse toggle), and `prefers-reduced-motion` handling in the small motion blocks. They are back on the [roadmap](./ROADMAP.md).
+
+## Earlier repository work (before 2026-11-06)
 
 - Repository is now self-contained: added `lib/cx.ts` and `types.ts`, which components referenced but which were missing from the public source
 - All 94 component and block files typecheck standalone (`npm run typecheck`), enforced by CI; ESLint added alongside it

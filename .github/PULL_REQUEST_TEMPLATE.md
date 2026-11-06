@@ -22,4 +22,4 @@
 
 ## Screenshots
 
-<!-- Required for visual changes: before/after, dark mode at minimum -->
+<!-- Required for visual changes: before/after, in dark and light -->

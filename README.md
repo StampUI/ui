@@ -1,7 +1,7 @@
 # StampUI
 
-**Source-owned UI blocks for React and Next.js.**
-Own your source code, no wrappers, no black boxes.
+**A monochrome UI system for React and Next.js, in dark (the default) and light.**
+Source you own: no wrappers, no runtime package.
 
 [![CI](https://github.com/StampUI/ui/actions/workflows/ci.yml/badge.svg)](https://github.com/StampUI/ui/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40stampui%2Fblocks?label=%40stampui%2Fblocks&color=000)](https://www.npmjs.com/package/@stampui/blocks)
@@ -12,142 +12,147 @@ Own your source code, no wrappers, no black boxes.
 
 ## What is StampUI?
 
-StampUI is a collection of UI components and blocks for React and Next.js, delivered as real `.tsx` source files. Instead of installing a component library as a runtime dependency, you stamp the source into your project with the [CLI](https://github.com/StampUI/cli) and own it from that moment on.
+StampUI is a set of components, charts, effects, backgrounds and blocks for React and Next.js, delivered as plain `.tsx` source. You copy the source into your project with the [CLI](https://www.npmjs.com/package/stampui) and own it from that point on. Start with the free set here, and add Pro blocks and Pages from [stampui.com](https://stampui.com/pricing) when you need complete product screens.
 
-This repository contains the complete free set: **94 MIT-licensed source files** (64 core components, 30 composed blocks), exactly as the CLI installs them. It typechecks standalone (`npm run typecheck`), so what you see here is what lands in your repo.
+This repository is the complete free set: **130 MIT source files**, exactly what `npx stampui add` installs (synced with `@stampui/blocks` 2.1.0). It typechecks standalone (`npm run typecheck`), so what you read here is what lands in your repo.
 
-- **No runtime dependency** on StampUI after install
-- **Tailwind CSS v4** native, plain CSS variable token system
-- **Dark and light mode** supported, dark-first design
-- **CLI delivery** via `npx stampui add <component>`
-- **MCP server** so AI editors can browse and install blocks directly
+- **Dark and light themes** from one token set. Dark is the default; `data-theme="light"` on `<html>` switches every component.
+- **Monochrome by design**: one neutral graphite ramp, status colour only where something needs attention.
+- **Charts** (bar list, sparkline, heatmap, meter, combo chart) in a graphite palette by default, with categorical and accent palettes as opt-in.
+- **Effects and backgrounds**: text reveal, shimmer, count-up, reveal on scroll, and animated canvas backgrounds. All respect `prefers-reduced-motion`.
+- **Tailwind CSS v4**, plain CSS variable tokens, no CSS-in-JS.
+- **No runtime dependency** on StampUI after install.
 
 ## Quick start
 
 ```bash
-npx stampui init
+npx stampui init           # writes stampui-theme.css (dark and light tokens) and lib/cx
 npx stampui add button
-npx stampui add faq-accordion
+npx stampui add combo-chart
 ```
 
-Then import from your own codebase:
+Import `stampui-theme.css` after `@import "tailwindcss";` in your entry stylesheet, then import components from your own codebase:
 
 ```tsx
 import { Button } from "@/components/core/button"
-import { FaqAccordion } from "@/components/blocks/faq-accordion"
+import { ComboChart } from "@/components/core/combo-chart"
 ```
 
-You can also copy any file from this repo by hand; each component is self-contained apart from `lib/cx.ts` and its listed npm dependencies. Every component has a doc page with a live playground and prop table at [stampui.com](https://stampui.com).
+`add` copies the component and every StampUI file it imports, then prints the npm packages to install with your package manager.
+
+You can also copy a file from this repo by hand: each one needs `lib/cx.ts`, the theme tokens, and the npm packages it imports. Docs, live previews and prop tables are at [stampui.com/docs](https://stampui.com/docs).
 
 **Requirements**: React 18 or 19, Tailwind CSS v4, TypeScript recommended, Next.js App Router or Vite.
 
-## Why source-owned UI?
+## Theme
 
-A component you can't read is a component you can't change. Runtime component libraries make you configure through props and fight through escape hatches; when the abstraction doesn't fit, you're stuck. With source in your repo:
+`npx stampui init` writes the tokens; [preview/src/globals.css](./preview/src/globals.css) carries the same stylesheet if you want to read it here.
+
+- **Dark** is the default and lives on `:root`.
+- **Light** lives on `:root[data-theme="light"]` and swaps every token. With next-themes, use `attribute="data-theme"`.
+- Components only use token utilities (`bg-card`, `text-muted-foreground`, `border-border-soft`, `bg-success-soft`, ...), so they never need to know which theme is active. There are no `dark:` variants.
+- **Chart palettes**: graphite (monochrome) by default. Set `data-chart="categorical"` or `data-chart="accent"` on `<html>`, or pass a chart's `palette` prop, to opt in to colour. The shared logic lives in `components/core/chart-palette.ts`.
+
+To restyle, change token values in your CSS, not class names in every component. Details: [stampui.com/docs/theming](https://stampui.com/docs/theming) and [chart palettes](https://stampui.com/docs/chart-palettes).
+
+## Why source you own?
+
+A component you can't read is a component you can't change. With the source in your repo:
 
 - You fix bugs and change behavior directly, no upstream release needed
-- There is no version upgrade that can break your UI without your involvement
-- The `stampui.lock.json` written by the CLI still lets you pull upstream updates deliberately (`stampui update`), so copied code isn't a dead end
+- No version upgrade can change your UI without you
+- `stampui.lock.json` still records what you installed, so `stampui update` can pull upstream changes when you choose to
 
-## Using StampUI with AI coding agents
+## Using StampUI with coding agents
 
-Source-owned components suit AI-assisted workflows for a plain mechanical reason: coding agents work on files in your repository. A StampUI component is such a file, so Claude Code, Cursor, or Copilot can inspect, refactor, restyle, and extend it exactly like code you wrote yourself, with no opaque package boundary in the way.
+Coding agents work on files in your repository, and a StampUI component is such a file, so an agent can read, restyle and extend it like code you wrote yourself.
 
-- **MCP server**: [`@stampui/mcp`](https://www.npmjs.com/package/@stampui/mcp) ([source](https://github.com/StampUI/mcp)) exposes `list_blocks`, `search_blocks`, `get_block`, and `stamp_block`, so an agent can discover and install blocks without leaving the editor.
-- **Predictable conventions**: every component uses the same patterns (design tokens only, `cx()` for conditional classes, named exports), which keeps agent-made edits consistent. See [AGENTS.md](./AGENTS.md) for editing guidelines aimed at agents.
-- **Deterministic structure**: components live at stable paths (`components/core/*`, `components/blocks/*`) that the block manifest documents, so tooling can reason about what is installed. The manifest format is documented in [docs/block-manifest.md](./docs/block-manifest.md).
+- **Predictable conventions**: design tokens only, `cx()` for conditional classes, named exports. See [AGENTS.md](./AGENTS.md).
+- **Stable paths**: `components/core/*`, `components/blocks/*`, `components/effects/*`, `components/backgrounds/*`, documented by the block manifest ([docs/block-manifest.md](./docs/block-manifest.md)).
+- **Machine-readable docs**: [stampui.com/llms.txt](https://stampui.com/llms.txt).
+- **MCP server**: planned, not released yet. Until it ships, use the CLI and llms.txt.
 
 ## Accessibility
 
-Current state, honestly: interactive primitives (dialogs, menus, selects, tooltips, and similar) are built on [Radix UI](https://www.radix-ui.com) primitives, which handle focus management, ARIA attributes, and keyboard interaction. Custom components target readable contrast in both themes and subtle motion.
+Interactive primitives (dialogs, menus, selects, tooltips and similar) are built on [Radix UI](https://www.radix-ui.com), which handles focus management, ARIA attributes and keyboard interaction. Text tokens are chosen to pass contrast in both themes. Effects and backgrounds respect `prefers-reduced-motion`.
 
-Not yet done, and tracked as open issues rather than claimed:
+Not done yet, and tracked rather than claimed:
 
-- A systematic audit of all components against the WAI-ARIA Authoring Practices
-- Verified `prefers-reduced-motion` coverage for every animated component
+- A systematic audit of every component against the WAI-ARIA Authoring Practices (including the command palette combobox pattern and accessible names on icon-only controls)
+- An RTL audit of layout primitives (sidebar, menubar, navigation menu, resizable)
+- `prefers-reduced-motion` for the small motion blocks (orbit trail, signal arc, grid wave, loading dots, typewriter text, animated counter) and marquee
 - Automated accessibility checks (axe) in CI
-- An RTL support audit for layout primitives
 
-If you hit an accessibility problem, please use the accessibility issue template; these reports are prioritized.
+If you hit an accessibility problem, please use the accessibility issue template; those reports are prioritized.
 
-## Open source vs Pro
+## Free and Pro
 
-Everything in this repository is MIT licensed and stays MIT. StampUI also has a commercial catalog: pro blocks and full-page templates sold at [stampui.com](https://stampui.com), delivered through a licensed registry. That commercial side is what funds the maintenance of this free core.
+Everything in this repository is MIT licensed and stays MIT. StampUI also sells Pro blocks and full Pages at [stampui.com](https://stampui.com/pricing), delivered through a licensed registry (`npx stampui login`). That funds the maintenance of the free set.
 
-The boundary, stated plainly:
-
-- The free components and blocks in this repo are MIT and will remain free.
-- Pro/commercial source is not in this repo and will not be added to it.
-- We don't promise that every future component or template will be open source; we do promise the existing free surface stays free, maintained, and complete enough to be useful on its own rather than a demo of the paid product.
+- Free components and blocks need no account, and the ones here will stay free.
+- Pro source is not in this repository and will not be added to it.
+- Not every future component will be free, but the free set stays maintained and useful on its own.
 
 ## How this relates to stampui.com
 
-stampui.com is the documentation and catalog site: live previews, prop tables, playgrounds, and the commercial templates. This repo is the source of the free set that the site documents and the CLI installs. Bug fixes and improvements to free components land here.
-
-## Compared to shadcn/ui
-
-shadcn/ui established copy-source distribution for React components, and StampUI deliberately follows the same philosophy; if you use shadcn happily, you don't need StampUI. The differences are emphasis:
-
-- An opinionated, dark-first monochrome design system out of the box, rather than a neutral base to theme
-- Composed blocks and full-page structures, not only primitives
-- A lock file and `stampui update` flow, so installed code has an upgrade path
-- MCP-first distribution for AI editors
+stampui.com is the docs and catalog: live previews, prop tables, theming and chart palette docs, and the Pro catalog. This repository is the source of the free set that the site documents and the CLI installs.
 
 ## Repository structure
 
 ```
 components/
-  core/      64 primitives and small components (MIT)
-  blocks/    30 composed sections and blocks (MIT)
+  core/         81 primitives, form controls, overlays, navigation, feedback and charts
+  blocks/       38 composed sections: marketing, auth, app and motion
+  effects/      5 text, number and entrance effects
+  backgrounds/  3 animated backgrounds
+  docs/         2 code block components (Shiki highlighting)
 lib/
-  cx.ts      class utility used by all components (clsx + tailwind-merge)
-types.ts     shared types (BlockManifest and friends)
-docs/        block manifest specification
-examples/    short usage snippets for commonly installed components
-preview/     local Vite harness for rendering examples/ while developing
+  cx.ts         class utility used by every component (clsx + tailwind-merge)
+  highlight.ts  Shiki highlighter used by the code block
+types.ts        shared types (BlockManifest and friends)
+docs/           block manifest specification
+examples/       short usage snippets for commonly installed components
+preview/        local Vite harness that renders examples/ in both themes
 ```
 
-See [examples/](./examples) for copyable usage snippets (button, input, dialog, dropdown menu, select, tabs, table, card, badge, tooltip), and [preview/](./preview) to render them locally.
+The full list with descriptions is in [components/core/README.md](./components/core/README.md) and [components/blocks/README.md](./components/blocks/README.md).
 
 ## Free component index
 
-Everything below is MIT, in this repository, and installable by slug with `npx stampui add <slug>`.
+Everything below is MIT, in this repository, and installable with `npx stampui add <slug>`.
 
 ### Primitives
-[Button](https://stampui.com/blocks/components/button) · [Button Group](https://stampui.com/blocks/components/button-group) · [Badge](https://stampui.com/blocks/components/badge) · [Label](https://stampui.com/blocks/components/label) · [Separator](https://stampui.com/blocks/components/separator) · [Kbd](https://stampui.com/blocks/components/kbd)
+Button · Button Group · Badge · Label · Separator · Kbd · Shortcut · Card · Aspect Ratio · Color Swatch
 
-### Inputs and Forms
-[Input](https://stampui.com/blocks/components/input) · [Textarea](https://stampui.com/blocks/components/textarea) · [Password Input](https://stampui.com/blocks/components/password-input) · [Checkbox](https://stampui.com/blocks/components/checkbox) · [Radio Group](https://stampui.com/blocks/components/radio-group) · [Switch](https://stampui.com/blocks/components/switch) · [Slider](https://stampui.com/blocks/components/slider) · [Select](https://stampui.com/blocks/components/select) · [Native Select](https://stampui.com/blocks/components/native-select) · [Combobox](https://stampui.com/blocks/components/combobox) · [Multi Select](https://stampui.com/blocks/components/multi-select) · [Date Picker](https://stampui.com/blocks/components/date-picker) · [Field](https://stampui.com/blocks/components/field) · [Input Group](https://stampui.com/blocks/components/input-group) · [Number Stepper](https://stampui.com/blocks/components/number-stepper) · [Tag Input](https://stampui.com/blocks/components/tag-input) · [Toggle](https://stampui.com/blocks/components/toggle) · [Toggle Group](https://stampui.com/blocks/components/toggle-group) · [Inline Edit](https://stampui.com/blocks/components/inline-edit)
+### Inputs and forms
+Input · Textarea · Password Input · Copy Input · Input OTP · Number Input · Number Stepper · Checkbox · Radio Group · Switch · Slider · Rating · Segmented Control · Select · Native Select · Combobox · Multi Select · Date Picker · Calendar · Field · Input Group · Tag Input · Toggle · Toggle Group · Inline Edit
 
-### Layout
-[Card](https://stampui.com/blocks/components/card) · [Aspect Ratio](https://stampui.com/blocks/components/aspect-ratio) · [Scroll Area](https://stampui.com/blocks/components/scroll-area) · [Resizable](https://stampui.com/blocks/components/resizable) · [Collapsible](https://stampui.com/blocks/components/collapsible) · [Accordion](https://stampui.com/blocks/components/accordion) · [Tabs](https://stampui.com/blocks/components/tabs) · [Sidebar](https://stampui.com/blocks/components/sidebar)
+### Layout and navigation
+Scroll Area · Resizable · Collapsible · Accordion · Tabs · Carousel · Sidebar · Breadcrumb · Menubar · Navigation Menu · Pagination
 
-### Overlay
-[Dialog](https://stampui.com/blocks/components/dialog) · [Drawer](https://stampui.com/blocks/components/drawer) · [Sheet](https://stampui.com/blocks/components/sheet) · [Popover](https://stampui.com/blocks/components/popover) · [Tooltip](https://stampui.com/blocks/components/tooltip) · [Hover Card](https://stampui.com/blocks/components/hover-card) · [Context Menu](https://stampui.com/blocks/components/context-menu) · [Dropdown Menu](https://stampui.com/blocks/components/dropdown-menu) · [Alert Dialog](https://stampui.com/blocks/components/alert-dialog) · [Sonner](https://stampui.com/blocks/components/sonner) · [Command](https://stampui.com/blocks/components/command) · [Command Box](https://stampui.com/blocks/components/command-box)
-
-### Navigation
-[Breadcrumb](https://stampui.com/blocks/components/breadcrumb) · [Menubar](https://stampui.com/blocks/components/menubar) · [Navigation Menu](https://stampui.com/blocks/components/navigation-menu) · [Pagination](https://stampui.com/blocks/components/pagination) · [Calendar](https://stampui.com/blocks/components/calendar)
+### Overlays
+Dialog · Alert Dialog · Drawer · Sheet · Popover · Tooltip · Hover Card · Context Menu · Dropdown Menu · Sonner · Command · Command Box
 
 ### Feedback
-[Alert](https://stampui.com/blocks/components/alert) · [Skeleton](https://stampui.com/blocks/components/skeleton) · [Spinner](https://stampui.com/blocks/components/spinner) · [Progress](https://stampui.com/blocks/components/progress) · [Progress Ring](https://stampui.com/blocks/components/progress-ring) · [Status Pulse](https://stampui.com/blocks/components/status-pulse) · [Empty](https://stampui.com/blocks/components/empty) · [Empty State](https://stampui.com/blocks/components/empty-state) · [Copy Button](https://stampui.com/blocks/components/copy-button) · [Confirm Action](https://stampui.com/blocks/components/confirm-action) · [Typing Indicator](https://stampui.com/blocks/components/typing-indicator)
+Alert · Skeleton · Spinner · Progress · Loading Bar · Reading Progress · Status Pulse · Empty · Copy Button · Confirm Action · Typing Indicator
 
-### Data Display
-[Table](https://stampui.com/blocks/components/table) · [Avatar](https://stampui.com/blocks/components/avatar) · [Avatar Stack](https://stampui.com/blocks/components/avatar-stack) · [Animated Number](https://stampui.com/blocks/components/animated-number) · [Animated Counter](https://stampui.com/blocks/components/animated-counter) · [Heatmap](https://stampui.com/blocks/components/heatmap)
+### Data display and charts
+Table · Avatar · Avatar Stack · Animated Number · Marquee · Bar List · Sparkline · Heatmap · Meter · Combo Chart · Chart Palette · Code Block
 
-### Marketing
-[Hero Section](https://stampui.com/blocks/components/hero-section) · [Pricing Section](https://stampui.com/blocks/components/pricing-section) · [Feature Grid](https://stampui.com/blocks/components/feature-grid) · [Stats Strip](https://stampui.com/blocks/components/stats-strip) · [Marquee](https://stampui.com/blocks/components/marquee)
+### Effects and backgrounds
+Reveal · Text Reveal · Shimmer Text · Count Up · Motion Gate · useEntrance · Dot Grid Ripple · Grid Pulse · Waves
 
-### Free Blocks
-[Announcement Bar](https://stampui.com/blocks/piece/announcement-bar) · [Changelog Feed](https://stampui.com/blocks/piece/changelog-feed) · [Cookie Consent](https://stampui.com/blocks/piece/cookie-consent) · [CTA Banner](https://stampui.com/blocks/piece/cta-banner) · [Empty State](https://stampui.com/blocks/piece/empty-state) · [FAQ Accordion](https://stampui.com/blocks/piece/faq-accordion) · [Feature Comparison](https://stampui.com/blocks/piece/feature-comparison) · [Gradient Text](https://stampui.com/blocks/piece/gradient-text) · [Metrics Grid](https://stampui.com/blocks/piece/metrics-grid) · [Site Footer](https://stampui.com/blocks/piece/site-footer) · [Social Proof Bar](https://stampui.com/blocks/piece/social-proof-bar) · [Team Grid](https://stampui.com/blocks/piece/team-grid) · [Testimonials Wall](https://stampui.com/blocks/piece/testimonials-wall) · [Waitlist Section](https://stampui.com/blocks/piece/waitlist-section)
+### Blocks
+Hero Section · Hero Centered · Feature Grid · Feature Comparison · Pricing Section · Stats Strip · Stat Cards · Metrics Grid · Social Proof Bar · Testimonials Wall · Team Grid · FAQ Accordion · FAQ Section · CTA Banner · Newsletter Inline · Waitlist Section · Announcement Bar · Changelog Feed · Site Footer · Cookie Consent · Email Login · Simple Signup · Forgot Password · Empty State · Error Page · Terminal Block · Usage Card · Registry Explorer
 
-Plus utility and showcase blocks in [`components/blocks/`](./components/blocks) (loading states, animated text, registry explorer, and more).
+Plus small motion blocks (loading card, loading dots, progress ring, orbit trail, signal arc, grid wave, typewriter text, animated counter, gradient text).
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the design rules, development setup, and how contributions flow. The [ROADMAP.md](./ROADMAP.md) lists where the project is headed; issues labeled `good first issue` are a reasonable starting point.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the design rules, development setup, and how contributions flow. [ROADMAP.md](./ROADMAP.md) lists where the project is headed; issues labeled `good first issue` are a reasonable starting point.
 
 ## License
 
 MIT for everything in this repository. See [LICENSE](./LICENSE).
 
-Pro blocks and templates at [stampui.com](https://stampui.com/pricing) are licensed separately and are not part of this repository.
+Pro blocks and Pages at [stampui.com](https://stampui.com/pricing) are licensed separately and are not part of this repository.
